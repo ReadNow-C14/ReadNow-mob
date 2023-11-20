@@ -44,8 +44,13 @@ Pengguna yang masuk ke dalam sistem memiliki akses lebih banyak fitur dan fungsi
 - Melihat Rekomendasi Personal: Pengguna dapat melihat rekomendasi buku yang disesuaikan berdasarkan preferensi mereka dan buku-buku yang telah mereka favoritkan.
 
 ## 📲 Integrasi dengan Situs Web 📲
-###
+1. Membuat model class berdasarkan model masing-masing anggota dengan memanfaatkan platform QuickType untuk membentuk struktur model berdasarkan data pada website (pada platform ini struktur model sudah menggunakan required pada setiap parameternya) .
 
+2. Melakukan integrasi model dengan database django yang berasal dari website Flutter pada Mobile App, kemudian membentuk API yang dapat mengembalikan response dalam bentuk JSON. 
+
+3. Menambahkan dependansi http kemudian membuat http request ke web service menggunakan dependensi http.
+
+4. Menampilkan data berdasarkan fetch data http dengan memanfaatkan widget `FutureBuilder`.
 
 
 ## 🔗 Tautan berita acara 🔗
