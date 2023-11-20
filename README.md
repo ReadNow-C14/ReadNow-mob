@@ -1,3 +1,5 @@
+<img width="1418" alt="bannerGithub" src="https://github.com/ReadNow-C14/ReadNow-mob/assets/121445072/3d15a3d7-f96a-4234-99c5-08721556ea3a">
+
 <h1 align="center">ReadNow</h1>
 <p align="center">Proyek berbasis Flutter untuk tugas kelompok akhir semester mata kuliah Pemrograman Berbasis Platform Ganjil 2023/2024.</p>
 
