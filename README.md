@@ -4,6 +4,10 @@
 <p align="center">Proyek berbasis Flutter untuk tugas kelompok akhir semester mata kuliah Pemrograman Berbasis Platform Ganjil 2023/2024.</p>
 
 ---
+[![Development](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/dev.yml/badge.svg)](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/dev.yml)
+[![Pre-Release](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/pre-release.yml/badge.svg)](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/pre-release.yml)
+[![Release](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/release.yml/badge.svg)](https://github.com/ReadNow-C14/ReadNow-mob/actions/workflows/release.yml)
+[![Build status](https://build.appcenter.ms/v0.1/apps/449a997f-d1d5-4685-94e4-79de776d2552/branches/main/badge)](https://appcenter.ms)
 ## 👥 Anggota Kelompok C-14 👥
 - [Harjuno Abdullah](https://github.com/hrjuno) (2206814053)
 - [Muhammad Fakhri Robbani](https://github.com/Meefx) (2206026252)
@@ -12,7 +16,7 @@
 - [Zuhdy Nadhif Ayyasy](https://github.com/zuhdynadhif) (2206081212)
 
 ## 🔗 Tautan APK  🔗
-tba
+[Link Aplikasi ReadNow](https://install.appcenter.ms/orgs/readnow/apps/readnow/distribution_groups/public)
 
 ---
 ## 📱 Tentang ReadNow 📱
