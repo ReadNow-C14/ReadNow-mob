@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:readnow_mobile/wishlists/widgets/left_drawer_wishlist.dart';
 
 void main() {
   runApp(const MyApp());
@@ -115,6 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      drawer: const TemporaryLeftDrawerWishlist(),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
