@@ -19,7 +19,7 @@ class _BorrowFormPageState extends State<BorrowFormPage>{
 
     return Scaffold(
 
-    )
+    );
   }
 
 }
