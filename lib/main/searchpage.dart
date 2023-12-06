@@ -1,130 +1,85 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+// import 'package:pbp_django_auth/pbp_django_auth.dart';
+// import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
+import 'package:http/http.dart' as http;
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
-  List<Book> _filteredBooks = [];
-
-  Future<List<Book>> fetchBooks() async {
-    var url = Uri.parse('http://127.0.0.1:8000/json/');
+  Future<List<Book>> fetchItem() async {
+    // final request = context.watch<CookieRequest>();
+    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/json/');
+    // melakukan decode response menjadi bentuk json
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
+
+    // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
-    List<Book> listBooks = [];
+
+    // melakukan konversi data json menjadi object Product
+    List<Book> list_product = [];
     for (var d in data) {
-      listBooks.add(Book.fromJson(d));
+      if (d != null) {
+        list_product.add(Book.fromJson(d));
+      }
     }
-    return listBooks;
-  }
-
-  void _filterBooks(List<Book> books, String searchTerm) {
-    setState(() {
-      _filteredBooks = books
-          .where((book) =>
-              book.fields.title.toLowerCase().contains(searchTerm) ||
-              book.fields.authors.toLowerCase().contains(searchTerm))
-          .toList();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(() {
-      String searchTerm = _searchController.text.toLowerCase();
-      _filterBooks(_filteredBooks, searchTerm);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
+    return list_product;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Books'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            onPressed: () {
-              // filter logic
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: "Search for books...",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-              ),
-            ),
-          ),
-          Expanded(
-            child: FutureBuilder<List<Book>>(
-              future: fetchBooks(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text("No books found."));
-                } else {
-                  if (_filteredBooks.isEmpty) {
-                    _filteredBooks =
-                        snapshot.data!; // Initialize with all books
-                  }
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    ),
-                    itemCount: _filteredBooks.length,
-                    itemBuilder: (context, index) {
-                      final book = _filteredBooks[index];
-                      return GridTile(
-                        child: Column(
-                          children: [
-                            Image.network(book.fields.imageUrl),
-                            Text(book.fields.title),
-                            Text(book.fields.authors),
-                          ],
-                        ),
-                      );
-                    },
+        appBar: AppBar(
+          title: const Text('Item'),
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,
+        ),
+        // drawer: const LeftDrawer(),
+        body: FutureBuilder(
+            future: fetchItem(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (!snapshot.hasData) {
+                  return const Column(
+                    children: [
+                      Text(
+                        "Tidak ada data item.",
+                        style:
+                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                      ),
+                      SizedBox(height: 8),
+                    ],
                   );
+                } else {
+                  return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (_, index) => GridTile(
+                              child: Column(
+                            children: [
+                              Image.network(
+                                  "${snapshot.data![index].fields.imageUrl}"),
+                              Text("${snapshot.data![index].fields.title}"),
+                              Text("${snapshot.data![index].fields.authors}"),
+                            ],
+                          )));
                 }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+              }
+            }));
   }
 }

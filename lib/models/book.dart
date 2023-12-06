@@ -1,3 +1,7 @@
+// To parse this JSON data, do
+//
+//     final book = bookFromJson(jsonString);
+
 import 'dart:convert';
 
 List<Book> bookFromJson(String str) =>
@@ -31,11 +35,11 @@ class Book {
 }
 
 class Fields {
-  String bookId;
+  int bookId;
   String title;
-  String authors;
   int numOfPages;
   Language language;
+  String authors;
   String publisher;
   String isbn;
   int countsOfReview;
@@ -54,14 +58,14 @@ class Fields {
   int publishMonth;
   int publishYear;
   Status status;
-  dynamic returnDate;
+  DateTime? returnDate;
 
   Fields({
     required this.bookId,
     required this.title,
-    required this.authors, // Newly added
     required this.numOfPages,
     required this.language,
+    required this.authors,
     required this.publisher,
     required this.isbn,
     required this.countsOfReview,
@@ -86,9 +90,9 @@ class Fields {
   factory Fields.fromJson(Map<String, dynamic> json) => Fields(
         bookId: json["book_id"],
         title: json["title"],
-        authors: json["authors"], // Newly added
         numOfPages: json["num_of_pages"],
         language: languageValues.map[json["language"]]!,
+        authors: json["authors"],
         publisher: json["publisher"],
         isbn: json["isbn"],
         countsOfReview: json["counts_of_review"],
@@ -107,15 +111,17 @@ class Fields {
         publishMonth: json["publish_month"],
         publishYear: json["publish_year"],
         status: statusValues.map[json["status"]]!,
-        returnDate: json["return_date"],
+        returnDate: json["return_date"] == null
+            ? null
+            : DateTime.parse(json["return_date"]),
       );
 
   Map<String, dynamic> toJson() => {
         "book_id": bookId,
         "title": title,
-        "authors": authors, // Newly added
         "num_of_pages": numOfPages,
         "language": languageValues.reverse[language],
+        "authors": authors,
         "publisher": publisher,
         "isbn": isbn,
         "counts_of_review": countsOfReview,
@@ -134,7 +140,8 @@ class Fields {
         "publish_month": publishMonth,
         "publish_year": publishYear,
         "status": statusValues.reverse[status],
-        "return_date": returnDate,
+        "return_date":
+            "${returnDate!.year.toString().padLeft(4, '0')}-${returnDate!.month.toString().padLeft(2, '0')}-${returnDate!.day.toString().padLeft(2, '0')}",
       };
 }
 
@@ -143,13 +150,14 @@ enum Language { ENG, EN_US }
 final languageValues =
     EnumValues({"eng": Language.ENG, "en-US": Language.EN_US});
 
-enum Status { AVAILABLE }
+enum Status { AVAILABLE, BORROWED }
 
-final statusValues = EnumValues({"Available": Status.AVAILABLE});
+final statusValues =
+    EnumValues({"Available": Status.AVAILABLE, "Borrowed": Status.BORROWED});
 
-enum Model { MAIN_BOOK }
+enum Model { BOOK_BOOK }
 
-final modelValues = EnumValues({"main.book": Model.MAIN_BOOK});
+final modelValues = EnumValues({"book.book": Model.BOOK_BOOK});
 
 class EnumValues<T> {
   Map<String, T> map;
