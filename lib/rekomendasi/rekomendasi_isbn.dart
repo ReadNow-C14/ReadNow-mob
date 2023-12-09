@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:pbp_django_auth/pbp_django_auth.dart';
-// import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
 
-class RecommendationPage extends StatefulWidget {
-  const RecommendationPage({Key? key}) : super(key: key);
+class RekomendasiISBN extends StatefulWidget {
+  final String isbn;
+  const RekomendasiISBN({Key? key, required this.isbn}) : super(key: key);
 
   @override
-  _RecommendationPageState createState() => _RecommendationPageState();
+  _RekomendasiISBNState createState() => _RekomendasiISBNState();
 }
 
-class _RecommendationPageState extends State<RecommendationPage> {
+class _RekomendasiISBNState extends State<RekomendasiISBN> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
 
@@ -26,18 +26,12 @@ class _RecommendationPageState extends State<RecommendationPage> {
     super.dispose();
   }
 
-  Future<List<Book>> fetchBook() async {
-    // final request = context.watch<CookieRequest>();
-    var urlWithId = "http://127.0.0.1:8000/rekomendasi/json/1";
-    var url = Uri.parse(urlWithId);
+  Future<List<Book>> fetchBookByISBN(String isbn) async {
+    final request = context.watch<CookieRequest>();
+    final response = await request
+        .get("http://127.0.0.1:8000/rekomendasi/json-isbn/?isbn=$isbn");
     // melakukan decode response menjadi bentuk json
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    var data = response;
 
     // melakukan konversi data json menjadi object Product
     List<Book> list_recommendation = [];
@@ -46,14 +40,18 @@ class _RecommendationPageState extends State<RecommendationPage> {
         list_recommendation.add(Book.fromJson(d));
       }
     }
-    if (kDebugMode) {
-      print(list_recommendation.length);
-    }
+    if (kDebugMode) print(list_recommendation.length);
+
     return list_recommendation;
   }
 
   @override
   Widget build(BuildContext context) {
+    String isbn = widget.isbn;
+    if (kDebugMode) {
+      print("ISBN nya adalah $isbn");
+    }
+
     return Scaffold(
         backgroundColor: const Color(0xFFF5F9FF),
         appBar: AppBar(
@@ -64,7 +62,6 @@ class _RecommendationPageState extends State<RecommendationPage> {
         // drawer: const LeftDrawer(),
         body: SingleChildScrollView(
             child: Column(children: [
-          // ================================= Field Search by ISBN =================================
           Container(
             margin: EdgeInsets.fromLTRB(13, 10, 19.66, 10),
             padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
@@ -103,7 +100,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
               ),
               onFieldSubmitted: (String value) {
                 isbnController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiISBN(
                       isbn: value), // Mengirim ISBN ke RecommendationPage
                 ));
@@ -154,16 +151,14 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 publishYearController.clear();
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(value),
-                      bookId:
-                          1), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: int.parse(
+                          value), bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
                 ));
               },
             ),
           ),
-          // ================================= Display all books data =================================
           FutureBuilder(
-              future: fetchBook(),
+              future: fetchBookByISBN(isbn),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   return const Center(child: Text("Data is null or not found"));
@@ -172,7 +167,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                     return const Column(
                       children: [
                         Text(
-                          "Tidak ada data item.",
+                          "Tidak ada data buku.",
                           style:
                               TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                         ),
@@ -183,7 +178,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                     return ListView.builder(
                         shrinkWrap: true, // Menambahkan ini
                         physics:
-                            const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
+                            NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
                               child: Container(

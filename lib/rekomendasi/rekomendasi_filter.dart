@@ -1,22 +1,26 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 // import 'package:pbp_django_auth/pbp_django_auth.dart';
 // import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
 
-class RecommendationPage extends StatefulWidget {
-  const RecommendationPage({Key? key}) : super(key: key);
+class RekomendasiFilter extends StatefulWidget {
+  final int publishedYear;
+  final int bookId;
+  const RekomendasiFilter({Key? key, required this.publishedYear, required this.bookId})
+      : super(key: key);
 
   @override
-  _RecommendationPageState createState() => _RecommendationPageState();
+  _RekomendasiFilterState createState() => _RekomendasiFilterState();
 }
 
-class _RecommendationPageState extends State<RecommendationPage> {
+class _RekomendasiFilterState extends State<RekomendasiFilter> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
 
@@ -26,18 +30,14 @@ class _RecommendationPageState extends State<RecommendationPage> {
     super.dispose();
   }
 
-  Future<List<Book>> fetchBook() async {
-    // final request = context.watch<CookieRequest>();
-    var urlWithId = "http://127.0.0.1:8000/rekomendasi/json/1";
-    var url = Uri.parse(urlWithId);
+  Future<List<Book>> filterBook(int publishedYear) async {
+    int bookId = widget.bookId;
+    final request = context.watch<CookieRequest>();
+    var response = await request.postJson("http://127.0.0.1:8000/rekomendasi/json/$bookId", jsonEncode(<String, int>{
+          'publishedYear': publishedYear,
+        }));
     // melakukan decode response menjadi bentuk json
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    // melakukan decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    var data = response;
 
     // melakukan konversi data json menjadi object Product
     List<Book> list_recommendation = [];
@@ -54,6 +54,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
 
   @override
   Widget build(BuildContext context) {
+    int publishedYear = widget.publishedYear;
+    int bookId = widget.bookId;
     return Scaffold(
         backgroundColor: const Color(0xFFF5F9FF),
         appBar: AppBar(
@@ -154,16 +156,15 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 publishYearController.clear();
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(value),
-                      bookId:
-                          1), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: int.parse(
+                          value), bookId: bookId), // Mengirim publishedYear ke RekomendasiFilter
                 ));
               },
             ),
           ),
           // ================================= Display all books data =================================
           FutureBuilder(
-              future: fetchBook(),
+              future: filterBook(publishedYear),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
                   return const Center(child: Text("Data is null or not found"));
@@ -183,7 +184,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                     return ListView.builder(
                         shrinkWrap: true, // Menambahkan ini
                         physics:
-                            const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
+                            NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
                               child: Container(
