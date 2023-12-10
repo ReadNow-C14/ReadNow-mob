@@ -110,6 +110,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                         ),
                                       ),
                                     ),
+                                    // Image
                                     Positioned(
                                       // imageKcX (1:2770)
                                       left: 0,
@@ -142,6 +143,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                         ),
                                       ),
                                     ),
+                                    // Author
                                     Positioned(
                                       // graphicdesignRfZ (1:2771)
                                       left: 144,
@@ -163,6 +165,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                         ),
                                       ),
                                     ),
+                                    // Rating
                                     Positioned(
                                       // graphicdesignadvanvMR (1:2772)
                                       left: 144,
@@ -184,6 +187,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                         ),
                                       ),
                                     ),
+                                    // Pages
                                     Positioned(
                                       // starDbR (1:2773)
                                       left: 143.9998779297,
@@ -267,6 +271,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                         ),
                                       ),
                                     ),
+                                    // ISBN
                                     Positioned(
                                       // viewcertificatepjd (1:2780)
                                       left: 144,
