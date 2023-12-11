@@ -28,8 +28,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
 
   Future<List<Book>> fetchBookByISBN(String isbn) async {
     final request = context.watch<CookieRequest>();
-    final response = await request
-        .get("http://127.0.0.1:8000/rekomendasi/json-isbn/?isbn=$isbn");
+    final response = await request.get(
+        "https://readnow-c14-tk.pbp.cs.ui.ac.id/rekomendasi/json-isbn/?isbn=$isbn");
     // melakukan decode response menjadi bentuk json
     var data = response;
 
@@ -149,10 +149,10 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
               ),
               onFieldSubmitted: (String value) {
                 publishYearController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(
-                          value), bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: int.parse(value),
+                      bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
                 ));
               },
             ),
@@ -161,7 +161,7 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
               future: fetchBookByISBN(isbn),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const Center(child: Text("Data is null or not found"));
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   if (!snapshot.hasData) {
                     return const Column(
