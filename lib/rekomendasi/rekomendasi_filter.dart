@@ -13,7 +13,8 @@ import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
 class RekomendasiFilter extends StatefulWidget {
   final int publishedYear;
   final int bookId;
-  const RekomendasiFilter({Key? key, required this.publishedYear, required this.bookId})
+  const RekomendasiFilter(
+      {Key? key, required this.publishedYear, required this.bookId})
       : super(key: key);
 
   @override
@@ -33,7 +34,9 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
   Future<List<Book>> filterBook(int publishedYear) async {
     int bookId = widget.bookId;
     final request = context.watch<CookieRequest>();
-    var response = await request.postJson("http://127.0.0.1:8000/rekomendasi/json/$bookId", jsonEncode(<String, int>{
+    var response = await request.postJson(
+        "https://readnow-c14-tk.pbp.cs.ui.ac.id/rekomendasi/json/$bookId",
+        jsonEncode(<String, int>{
           'publishedYear': publishedYear,
         }));
     // melakukan decode response menjadi bentuk json
@@ -105,7 +108,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
               ),
               onFieldSubmitted: (String value) {
                 isbnController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiISBN(
                       isbn: value), // Mengirim ISBN ke RecommendationPage
                 ));
@@ -154,10 +157,11 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
               ),
               onFieldSubmitted: (String value) {
                 publishYearController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(
-                          value), bookId: bookId), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: int.parse(value),
+                      bookId:
+                          bookId), // Mengirim publishedYear ke RekomendasiFilter
                 ));
               },
             ),
@@ -167,7 +171,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
               future: filterBook(publishedYear),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const Center(child: Text("Data is null or not found"));
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   if (!snapshot.hasData) {
                     return const Column(

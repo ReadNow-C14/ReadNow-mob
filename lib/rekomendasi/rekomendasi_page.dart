@@ -10,7 +10,8 @@ import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
 
 class RecommendationPage extends StatefulWidget {
-  const RecommendationPage({Key? key}) : super(key: key);
+  final Book book;
+  const RecommendationPage({Key? key, required this.book}) : super(key: key);
 
   @override
   _RecommendationPageState createState() => _RecommendationPageState();
@@ -27,8 +28,10 @@ class _RecommendationPageState extends State<RecommendationPage> {
   }
 
   Future<List<Book>> fetchBook() async {
+    Book book = widget.book;
     // final request = context.watch<CookieRequest>();
-    var urlWithId = "http://127.0.0.1:8000/rekomendasi/json/1";
+    var urlWithId =
+        "https://readnow-c14-tk.pbp.cs.ui.ac.id/rekomendasi/json/${book.pk}";
     var url = Uri.parse(urlWithId);
     // melakukan decode response menjadi bentuk json
     var response = await http.get(
@@ -45,9 +48,6 @@ class _RecommendationPageState extends State<RecommendationPage> {
       if (d != null) {
         list_recommendation.add(Book.fromJson(d));
       }
-    }
-    if (kDebugMode) {
-      print(list_recommendation.length);
     }
     return list_recommendation;
   }
@@ -155,8 +155,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
                       publishedYear: int.parse(value),
-                      bookId:
-                          1), // Mengirim publishedYear ke RekomendasiFilter
+                      bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
                 ));
               },
             ),
@@ -166,7 +165,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
               future: fetchBook(),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const Center(child: Text("Data is null or not found"));
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   if (!snapshot.hasData) {
                     return const Column(
