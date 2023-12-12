@@ -1,0 +1,6 @@
+Tugas:
+- Login
+- Register
+- Page Utama
+- Page masing-masing buku
+- Drawer gausah dibikin, tugas Fakhri
