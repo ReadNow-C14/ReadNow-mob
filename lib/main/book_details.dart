@@ -11,6 +11,7 @@ class BookDetails extends StatefulWidget {
   const BookDetails({Key? key, required this.book}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _BookDetailsState createState() => _BookDetailsState();
 }
 
@@ -111,7 +112,7 @@ class _BookDetailsState extends State<BookDetails> {
                                     ),
                                     Container(
                                       // autogroupgv517tw (4nWfnydSDYyNKei3WKGv51)
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       width: double.infinity,
                                       height: 159,
                                       child: Row(
@@ -120,7 +121,7 @@ class _BookDetailsState extends State<BookDetails> {
                                         children: [
                                           Container(
                                             // rectangle278Eif (68:628)
-                                            margin: EdgeInsets.fromLTRB(
+                                            margin: const EdgeInsets.fromLTRB(
                                                 0, 0, 20, 4),
                                             width: 100,
                                             height: 145,
@@ -133,7 +134,7 @@ class _BookDetailsState extends State<BookDetails> {
                                               ),
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             // group1843LFu (68:611)
                                             width: 230,
                                             height: double.infinity,
@@ -143,7 +144,7 @@ class _BookDetailsState extends State<BookDetails> {
                                               children: [
                                                 Container(
                                                   // autogroupwpdvGQT (4nWg1PSRVve5jAZA4PWPDV)
-                                                  margin: EdgeInsets.fromLTRB(
+                                                  margin: const EdgeInsets.fromLTRB(
                                                       0, 0, 0, 4),
                                                   width: 220,
                                                   height: 77,
@@ -169,7 +170,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                                     FontWeight
                                                                         .w600,
                                                                 height: 1.5,
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xff1f1e22),
                                                               ),
                                                               maxLines:
@@ -201,7 +202,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                                     FontWeight
                                                                         .w600,
                                                                 height: 3,
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xff1f1e22),
                                                               ),
                                                             ),
@@ -211,7 +212,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     ],
                                                   ),
                                                 ),
-                                                Container(
+                                                SizedBox(
                                                   // autogrouphxabsHm (4nWg6dngNqQ67B7DDfhXab)
                                                   width: 180,
                                                   height: 78,
@@ -238,7 +239,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                                         .w400,
                                                                 height:
                                                                     3.0769230769,
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xff77777a),
                                                               ),
                                                             ),
@@ -266,7 +267,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                                         .w400,
                                                                 height:
                                                                     3.6363636364,
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xff1f1e22),
                                                               ),
                                                             ),
@@ -292,7 +293,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                                         .w600,
                                                                 height:
                                                                     2.3529411765,
-                                                                color: Color(
+                                                                color: const Color(
                                                                     0xffff8f5c),
                                                               ),
                                                             ),
@@ -317,11 +318,11 @@ class _BookDetailsState extends State<BookDetails> {
                               left: 20,
                               top: 323,
                               child: Container(
-                                padding: EdgeInsets.fromLTRB(28.5, 12, 24.5, 6),
+                                padding: const EdgeInsets.fromLTRB(28.5, 12, 24.5, 6),
                                 width: 375,
                                 height: 76,
                                 decoration: BoxDecoration(
-                                  color: Color(0xfff1f1f1),
+                                  color: const Color(0xfff1f1f1),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Row(
@@ -329,7 +330,7 @@ class _BookDetailsState extends State<BookDetails> {
                                   children: [
                                     Container(
                                       // autogroupqenxFr3 (4nWgaY9rSZVmsUn1UwqENX)
-                                      margin: EdgeInsets.fromLTRB(0, 0, 53, 1),
+                                      margin: const EdgeInsets.fromLTRB(0, 0, 53, 1),
                                       width: 90,
                                       height: 57,
                                       child: Stack(
@@ -349,7 +350,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: Color(0xff77777a),
+                                                    color: const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -370,7 +371,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: Color(0xff1f1e22),
+                                                    color: const Color(0xff1f1e22),
                                                   ),
                                                 ),
                                               ),
@@ -382,7 +383,7 @@ class _BookDetailsState extends State<BookDetails> {
                                     Container(
                                       // autogroupcnewaWw (4nWgecsPM3eDwi6VicCnew)
                                       margin:
-                                          EdgeInsets.fromLTRB(0, 0, 50.5, 0),
+                                          const EdgeInsets.fromLTRB(0, 0, 50.5, 0),
                                       width: 50,
                                       height: double.infinity,
                                       child: Stack(
@@ -402,7 +403,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: Color(0xff77777a),
+                                                    color: const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -423,7 +424,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: Color(0xff1f1e22),
+                                                    color: const Color(0xff1f1e22),
                                                   ),
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -434,7 +435,7 @@ class _BookDetailsState extends State<BookDetails> {
                                         ],
                                       ),
                                     ),
-                                    Container(
+                                    SizedBox(
                                       // autogroupfyu1fgo (4nWgi7mZGKUts3oCVTfYu1)
                                       width: 65,
                                       height: double.infinity,
@@ -455,7 +456,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: Color(0xff77777a),
+                                                    color: const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -476,7 +477,7 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: Color(0xff1f1e22),
+                                                    color: const Color(0xff1f1e22),
                                                   ),
                                                 ),
                                               ),
@@ -495,7 +496,7 @@ class _BookDetailsState extends State<BookDetails> {
                     ),
                   ],
                 )),
-            Container(
+            SizedBox(
                 // autogroupmnefJHH (4nWivJaxzYJUzRapFrMneF)
                 width: double.infinity,
                 height: 200,
@@ -503,34 +504,34 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     Container(
                       // autogroupk1ejkiX (4nWokqCCk4MdJuHfWRk1Ej)
-                      margin: EdgeInsets.fromLTRB(21, 0, 38, 34),
+                      margin: const EdgeInsets.fromLTRB(21, 0, 38, 34),
                       width: double.infinity,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             // reviewsHiT (108:1865)
-                            margin: EdgeInsets.fromLTRB(0, 1, 185, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 1, 185, 0),
                             child: Text(
                               'Reviews',
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                                 height: 3.0769230769,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             ),
                           ),
                           Container(
                             // addyourreviewQHH (108:1867)
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 1),
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
                             child: Text(
                               'Add your review',
                               style: GoogleFonts.poppins(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 height: 3.6363636364,
-                                color: Color(0xff77777a),
+                                color: const Color(0xff77777a),
                               ),
                             ),
                           ),
@@ -546,13 +547,13 @@ class _BookDetailsState extends State<BookDetails> {
                         style: GoogleFonts.poppins(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xff77777a),
+                          color: const Color(0xff77777a),
                         ),
                       ),
                     ),
                   ],
                 )),
-            Container(
+            SizedBox(
                 // autogroupmnefJHH (4nWivJaxzYJUzRapFrMneF)
                 width: double.infinity,
                 height: 48,
@@ -560,36 +561,36 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     Container(
                       // line4GLj (108:1897)
-                      margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
+                      margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
                       width: double.infinity,
                       height: 1,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xffd6d5d2),
                       ),
                     ),
                     Container(
                       // autogroupsxymPgF (4nWosQqaAJxZBWxwSQsXym)
-                      margin: EdgeInsets.fromLTRB(16, 0, 24, 0),
+                      margin: const EdgeInsets.fromLTRB(16, 0, 24, 0),
                       width: double.infinity,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
                             // similarbooksvAP (108:1866)
-                            margin: EdgeInsets.fromLTRB(5, 0, 230, 1),
+                            margin: const EdgeInsets.fromLTRB(5, 0, 230, 1),
                             child: Text(
                               'Similar Books',
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
                                 height: 3.0769230769,
-                                color: Color(0xff1f1e22),
+                                color: const Color(0xff1f1e22),
                               ),
                             ),
                           ),
                           Container(
                             // seeallERy (108:1869)
-                            margin: EdgeInsets.fromLTRB(0, 1, 0, 0),
+                            margin: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                             child: InkWell(
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -604,7 +605,7 @@ class _BookDetailsState extends State<BookDetails> {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
                                   height: 3.6363636364,
-                                  color: Color(0xff1f1e22),
+                                  color: const Color(0xff1f1e22),
                                 ),
                               ),
                             ),
@@ -618,7 +619,7 @@ class _BookDetailsState extends State<BookDetails> {
                 // autogroupbtwwerf (4nWi7AGrNp67AkZ9jtBtWw)
                 left: 22,
                 top: 800,
-                child: Container(
+                child: SizedBox(
                     width: 420,
                     height: 150,
                     // decoration: BoxDecoration(
@@ -669,7 +670,7 @@ class _BookDetailsState extends State<BookDetails> {
                                       child: Container(
                                         // autogroupbm4waVR (4nWiKEm4XMJ6CccxbnBm4w)
                                         margin:
-                                            EdgeInsets.fromLTRB(28, 0, 5, 0),
+                                            const EdgeInsets.fromLTRB(28, 0, 5, 0),
                                         width: 120,
                                         height: 200,
                                         child: Stack(children: [
@@ -760,9 +761,9 @@ class _BookDetailsState extends State<BookDetails> {
               right: 0,
               bottom: 0, // Menempelkan ke bawah layar
               child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 35, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
                 height: 60,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xfffce76c),
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(20),
@@ -778,14 +779,14 @@ class _BookDetailsState extends State<BookDetails> {
                         },
                         child: Container(
                           // frame107NB (I78:939;74:806)
-                          margin: EdgeInsets.fromLTRB(0, 0, 34, 0),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 34, 0),
                           width: 295,
                           height: double.infinity,
                           decoration: BoxDecoration(
                             color: statusString == "Available"
-                                ? Color(0xff8bd0fc)
-                                : Color.fromARGB(255, 197, 197, 197),
-                            borderRadius: BorderRadius.only(
+                                ? const Color(0xff8bd0fc)
+                                : const Color.fromARGB(255, 197, 197, 197),
+                            borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(20),
                             ),
                           ),
@@ -797,17 +798,17 @@ class _BookDetailsState extends State<BookDetails> {
                                 fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 height: 2.3529411765,
-                                color: Color(0xff000000),
+                                color: const Color(0xff000000),
                               ),
                             ),
                           ),
                         )),
                     Container(
                         // vectornDR (I78:939;75:809)
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 1),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
                         width: 26,
                         height: 23,
-                        child: Icon(Icons.favorite_border_rounded, size: 26)),
+                        child: const Icon(Icons.favorite_border_rounded, size: 26)),
                   ],
                 ),
               ),

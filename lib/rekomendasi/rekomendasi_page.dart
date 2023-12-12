@@ -1,8 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:pbp_django_auth/pbp_django_auth.dart';
-// import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +11,7 @@ class RecommendationPage extends StatefulWidget {
   const RecommendationPage({Key? key, required this.book}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RecommendationPageState createState() => _RecommendationPageState();
 }
 
@@ -43,13 +41,13 @@ class _RecommendationPageState extends State<RecommendationPage> {
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
     // melakukan konversi data json menjadi object Product
-    List<Book> list_recommendation = [];
+    List<Book> listRecommendation = [];
     for (var d in data) {
       if (d != null) {
-        list_recommendation.add(Book.fromJson(d));
+        listRecommendation.add(Book.fromJson(d));
       }
     }
-    return list_recommendation;
+    return listRecommendation;
   }
 
   @override
@@ -66,10 +64,10 @@ class _RecommendationPageState extends State<RecommendationPage> {
             child: Column(children: [
           // ================================= Field Search by ISBN =================================
           Container(
-            margin: EdgeInsets.fromLTRB(13, 10, 19.66, 10),
-            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+            margin: const EdgeInsets.fromLTRB(13, 10, 19.66, 10),
+            padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -86,10 +84,10 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 hintStyle: GoogleFonts.mulish(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xffb4bdc4),
+                  color: const Color(0xffb4bdc4),
                 ),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Image.asset("assets/images/search.png",
                       width: 30, height: 30),
                 ),
@@ -98,8 +96,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Color(0xffffffff),
-                contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                fillColor: const Color(0xffffffff),
+                contentPadding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
               ),
               onFieldSubmitted: (String value) {
                 isbnController.clear();
@@ -112,10 +110,10 @@ class _RecommendationPageState extends State<RecommendationPage> {
           ),
           // ================================= Filter PublishedYear =================================
           Container(
-            margin: EdgeInsets.fromLTRB(13, 0, 19.66, 10),
-            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+            margin: const EdgeInsets.fromLTRB(13, 0, 19.66, 10),
+            padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -133,7 +131,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 hintStyle: GoogleFonts.mulish(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xffb4bdc4),
+                  color: const Color(0xffb4bdc4),
                 ),
                 prefixIcon: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -147,8 +145,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Color(0xffffffff),
-                contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                fillColor: const Color(0xffffffff),
+                contentPadding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
               ),
               onFieldSubmitted: (String value) {
                 publishYearController.clear();
@@ -187,7 +185,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                         itemBuilder: (_, index) => GridTile(
                               child: Container(
                                 // 7WT (1:2768)
-                                margin: EdgeInsets.fromLTRB(13, 0, 13, 20),
+                                margin: const EdgeInsets.fromLTRB(13, 0, 13, 20),
                                 width: double.infinity,
                                 height: 142,
                                 child: Stack(
@@ -204,7 +202,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(16),
-                                              color: Color(0xffffffff),
+                                              color: const Color(0xffffffff),
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: Color(0x14000000),
@@ -263,7 +261,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,
                                               height: 1.255,
-                                              color: Color(0xffff6b00),
+                                              color: const Color(0xffff6b00),
                                             ),
                                             // overflow: TextOverflow.ellipsis,
                                           ),
@@ -284,7 +282,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                               height: 1.445,
-                                              color: Color(0xff202244),
+                                              color: const Color(0xff202244),
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -295,7 +293,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                       // starDbR (1:2773)
                                       left: 143.9998779297,
                                       top: 73,
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 141,
                                         height: 19,
                                         child: Row(
@@ -304,7 +302,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                           children: [
                                             Container(
                                               // starLg3 (1:2774)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 3, 2.6),
                                               width: 12,
                                               height: 11.4,
@@ -316,7 +314,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                             ),
                                             Container(
                                               // FY7 (1:2777)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 8, 0),
                                               child: Text(
                                                 "${snapshot.data![index].fields.rating}",
@@ -324,13 +322,13 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w800,
                                                   height: 1.255,
-                                                  color: Color(0xff202244),
+                                                  color: const Color(0xff202244),
                                                 ),
                                               ),
                                             ),
                                             Container(
                                               // n2F (1:2778)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 8, 1),
                                               child: Text(
                                                 '|',
@@ -338,13 +336,13 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                   height: 1.255,
-                                                  color: Color(0xff000000),
+                                                  color: const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
                                             Container(
                                               // starLg3 (1:2774)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 3, 2.6),
                                               width: 12,
                                               height: 11.4,
@@ -361,7 +359,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w800,
                                                 height: 1.255,
-                                                color: Color(0xff202244),
+                                                color: const Color(0xff202244),
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -384,7 +382,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                               fontWeight: FontWeight.w800,
                                               height: 1.255,
                                               color:
-                                                  Color.fromARGB(255, 0, 0, 0),
+                                                  const Color.fromARGB(255, 0, 0, 0),
                                             ),
                                           ),
                                         ),
