@@ -12,8 +12,8 @@ class AddReviewScreen extends StatefulWidget {
 
 class _AddReviewScreenState extends State<AddReviewScreen> {
   final _formKey = GlobalKey<FormState>();
-  int _rating = 1;
-  String _comment = '';
+  int _rating = 0;
+  String _comment = "";
 
   void _submitReview() {
     if (_formKey.currentState!.validate()) {
@@ -21,7 +21,6 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
 
       // Here you should send the review data to your backend.
       // For example: uploadReview(widget.bookId, _rating, _comment);
-
       Navigator.of(context).pop(); // Close the screen after submission
     }
   }
@@ -30,7 +29,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Review for Book ${widget.bookId}'),
+        title: Text('${widget.bookId}'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -40,7 +39,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Comment'),
+                decoration: InputDecoration(labelText: 'comment'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a comment';
@@ -53,7 +52,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
               ),
               DropdownButtonFormField<int>(
                 value: _rating,
-                decoration: InputDecoration(labelText: 'Rating'),
+                decoration: InputDecoration(labelText: 'rating'),
                 items: List.generate(5, (index) => index + 1)
                     .map<DropdownMenuItem<int>>((int value) {
                   return DropdownMenuItem<int>(
