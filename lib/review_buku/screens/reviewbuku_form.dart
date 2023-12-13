@@ -42,7 +42,7 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 decoration: InputDecoration(labelText: 'comment'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a comment';
+                    return 'Please enter your review';
                   }
                   return null;
                 },
