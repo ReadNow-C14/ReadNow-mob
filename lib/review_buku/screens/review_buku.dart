@@ -7,7 +7,8 @@ import 'dart:convert';
 import 'package:readnow_mobile/review_buku/models/reviewBuku.dart';
 
 class ReviewPage extends StatefulWidget {
-    const ReviewPage({Key? key}) : super(key: key);
+    final int bookid;
+    const ReviewPage({Key? key, required this.bookid}) : super(key: key);
 
     @override
     _ReviewPageState createState() => _ReviewPageState();
@@ -15,7 +16,7 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   Future<List<Review>> fetchReview(request) async {
-    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/7');
+    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
     var response = await http.get(url, headers: {"Content-Type": "application/json"});
 
     if (kDebugMode) {
