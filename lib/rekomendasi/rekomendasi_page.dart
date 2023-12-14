@@ -18,6 +18,8 @@ class RecommendationPage extends StatefulWidget {
 class _RecommendationPageState extends State<RecommendationPage> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
+  String _isbn = "";
+  int _publishYearInput = 0;
 
   @override
   void dispose() {
@@ -52,6 +54,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
 
   @override
   Widget build(BuildContext context) {
+    Book book = widget.book;
     return Scaffold(
         backgroundColor: const Color(0xFFF5F9FF),
         appBar: AppBar(
@@ -103,8 +106,19 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 isbnController.clear();
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RekomendasiISBN(
-                      isbn: value), // Mengirim ISBN ke RecommendationPage
+                      isbn: _isbn), // Mengirim ISBN ke RecommendationPage
                 ));
+              },
+              onChanged: (String? value) {
+                setState(() {
+                  _isbn = value!;
+                });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "ISBN tidak boleh kosong!";
+                }
+                return null;
               },
             ),
           ),
@@ -152,9 +166,24 @@ class _RecommendationPageState extends State<RecommendationPage> {
                 publishYearController.clear();
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(value),
-                      bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: _publishYearInput,
+                      bookId: book
+                          .pk), // Mengirim publishedYear ke RekomendasiFilter
                 ));
+              },
+              onChanged: (String? value) {
+                setState(() {
+                  _publishYearInput = int.parse(value!);
+                });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Publish Year tidak boleh kosong!";
+                }
+                if (int.tryParse(value) == null) {
+                  return "Publish Year harus berupa angka!";
+                }
+                return null;
               },
             ),
           ),
@@ -185,7 +214,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                         itemBuilder: (_, index) => GridTile(
                               child: Container(
                                 // 7WT (1:2768)
-                                margin: const EdgeInsets.fromLTRB(13, 0, 13, 20),
+                                margin:
+                                    const EdgeInsets.fromLTRB(13, 0, 13, 20),
                                 width: double.infinity,
                                 height: 142,
                                 child: Stack(
@@ -322,7 +352,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w800,
                                                   height: 1.255,
-                                                  color: const Color(0xff202244),
+                                                  color:
+                                                      const Color(0xff202244),
                                                 ),
                                               ),
                                             ),
@@ -336,7 +367,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                   height: 1.255,
-                                                  color: const Color(0xff000000),
+                                                  color:
+                                                      const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -381,8 +413,8 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
                                               height: 1.255,
-                                              color:
-                                                  const Color.fromARGB(255, 0, 0, 0),
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0),
                                             ),
                                           ),
                                         ),
