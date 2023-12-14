@@ -6,6 +6,7 @@ import 'package:readnow_mobile/models/book.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
 
+
 class RekomendasiISBN extends StatefulWidget {
   final String isbn;
   const RekomendasiISBN({Key? key, required this.isbn}) : super(key: key);
@@ -18,6 +19,7 @@ class RekomendasiISBN extends StatefulWidget {
 class _RekomendasiISBNState extends State<RekomendasiISBN> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
+
 
   @override
   void dispose() {
@@ -47,9 +49,6 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
   @override
   Widget build(BuildContext context) {
     String isbn = widget.isbn;
-    if (kDebugMode) {
-      print("ISBN nya adalah $isbn");
-    }
 
     return Scaffold(
         backgroundColor: const Color(0xFFF5F9FF),
@@ -104,6 +103,12 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                       isbn: value), // Mengirim ISBN ke RecommendationPage
                 ));
               },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "ISBN tidak boleh kosong!";
+                }
+                return null;
+              },
             ),
           ),
           // ================================= Filter PublishedYear =================================
@@ -153,6 +158,15 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                       publishedYear: int.parse(value),
                       bookId: 1), // Mengirim publishedYear ke RekomendasiFilter
                 ));
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Publish Year tidak boleh kosong!";
+                }
+                if (int.tryParse(value) == null) {
+                  return "Publish Year harus berupa angka!";
+                }
+                return null;
               },
             ),
           ),

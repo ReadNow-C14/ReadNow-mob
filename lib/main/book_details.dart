@@ -87,7 +87,8 @@ class _BookDetailsState extends State<BookDetails> {
                               left: 0,
                               top: 0,
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(20, 49, 20, 99),
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 49, 20, 99),
                                 width: 415,
                                 height: 361,
                                 decoration: const BoxDecoration(
@@ -102,8 +103,8 @@ class _BookDetailsState extends State<BookDetails> {
                                             context); // Melakukan pop pada navigator ketika diklik
                                       },
                                       child: Container(
-                                        margin:
-                                            const EdgeInsets.fromLTRB(10, 0, 0, 24),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            10, 0, 0, 24),
                                         width: 30,
                                         height: 30,
                                         child: const Icon(Icons.arrow_back_ios,
@@ -112,7 +113,8 @@ class _BookDetailsState extends State<BookDetails> {
                                     ),
                                     Container(
                                       // autogroupgv517tw (4nWfnydSDYyNKei3WKGv51)
-                                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          10, 0, 10, 0),
                                       width: double.infinity,
                                       height: 159,
                                       child: Row(
@@ -144,8 +146,9 @@ class _BookDetailsState extends State<BookDetails> {
                                               children: [
                                                 Container(
                                                   // autogroupwpdvGQT (4nWg1PSRVve5jAZA4PWPDV)
-                                                  margin: const EdgeInsets.fromLTRB(
-                                                      0, 0, 0, 4),
+                                                  margin:
+                                                      const EdgeInsets.fromLTRB(
+                                                          0, 0, 0, 4),
                                                   width: 220,
                                                   height: 77,
                                                   child: Stack(
@@ -318,7 +321,8 @@ class _BookDetailsState extends State<BookDetails> {
                               left: 20,
                               top: 323,
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(28.5, 12, 24.5, 6),
+                                padding: const EdgeInsets.fromLTRB(
+                                    28.5, 12, 24.5, 6),
                                 width: 375,
                                 height: 76,
                                 decoration: BoxDecoration(
@@ -330,7 +334,8 @@ class _BookDetailsState extends State<BookDetails> {
                                   children: [
                                     Container(
                                       // autogroupqenxFr3 (4nWgaY9rSZVmsUn1UwqENX)
-                                      margin: const EdgeInsets.fromLTRB(0, 0, 53, 1),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 0, 53, 1),
                                       width: 90,
                                       height: 57,
                                       child: Stack(
@@ -350,7 +355,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: const Color(0xff77777a),
+                                                    color:
+                                                        const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -371,7 +377,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: const Color(0xff1f1e22),
+                                                    color:
+                                                        const Color(0xff1f1e22),
                                                   ),
                                                 ),
                                               ),
@@ -382,8 +389,8 @@ class _BookDetailsState extends State<BookDetails> {
                                     ),
                                     Container(
                                       // autogroupcnewaWw (4nWgecsPM3eDwi6VicCnew)
-                                      margin:
-                                          const EdgeInsets.fromLTRB(0, 0, 50.5, 0),
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 0, 50.5, 0),
                                       width: 50,
                                       height: double.infinity,
                                       child: Stack(
@@ -403,7 +410,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: const Color(0xff77777a),
+                                                    color:
+                                                        const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -424,7 +432,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: const Color(0xff1f1e22),
+                                                    color:
+                                                        const Color(0xff1f1e22),
                                                   ),
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -456,7 +465,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 8,
                                                     fontWeight: FontWeight.w500,
                                                     height: 5,
-                                                    color: const Color(0xff77777a),
+                                                    color:
+                                                        const Color(0xff77777a),
                                                   ),
                                                 ),
                                               ),
@@ -477,7 +487,8 @@ class _BookDetailsState extends State<BookDetails> {
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w700,
                                                     height: 3.3333333333,
-                                                    color: const Color(0xff1f1e22),
+                                                    color:
+                                                        const Color(0xff1f1e22),
                                                   ),
                                                 ),
                                               ),
@@ -669,8 +680,8 @@ class _BookDetailsState extends State<BookDetails> {
                                       },
                                       child: Container(
                                         // autogroupbm4waVR (4nWiKEm4XMJ6CccxbnBm4w)
-                                        margin:
-                                            const EdgeInsets.fromLTRB(28, 0, 5, 0),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            28, 0, 5, 0),
                                         width: 120,
                                         height: 200,
                                         child: Stack(children: [
@@ -693,9 +704,13 @@ class _BookDetailsState extends State<BookDetails> {
                                                         height: 105.83,
                                                         child: Container(
                                                           decoration:
-                                                              const BoxDecoration(
-                                                            color: Color(
-                                                                0xfffce76c),
+                                                              BoxDecoration(
+                                                            color: index % 2 ==
+                                                                    0
+                                                                ? const Color(
+                                                                    0xfffce76c)
+                                                                : const Color(
+                                                                    0xff8bd0fc),
                                                           ),
                                                         ),
                                                       ),
@@ -808,7 +823,8 @@ class _BookDetailsState extends State<BookDetails> {
                         margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
                         width: 26,
                         height: 23,
-                        child: const Icon(Icons.favorite_border_rounded, size: 26)),
+                        child: const Icon(Icons.favorite_border_rounded,
+                            size: 26)),
                   ],
                 ),
               ),
