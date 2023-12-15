@@ -7,7 +7,7 @@ import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 // Import your Review model and any other necessary imports
 
 class AddReview extends StatefulWidget {
-  final int bookId; // Assuming each book has a unique identifier
+  final int bookId;
 
   AddReview({Key? key, required this.bookId}) : super(key: key);
 
@@ -30,6 +30,7 @@ class _AddReviewState extends State<AddReview> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Add your Review'),
@@ -68,12 +69,13 @@ class _AddReviewState extends State<AddReview> {
               ElevatedButton(
                 onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                        String username = 'testUser';
                         // Kirim ke Django dan tunggu respons
                         final response = await request.postJson(
                         "https://readnow-c14-tk.pbp.cs.ui.ac.id/submit-review-flutter/${widget.bookId}",
                         jsonEncode(<String, String>{
                             'id_buk_db': widget.bookId.toString(),
-                            //'user': request.user!.username,
+                            'user': username,
                             'rating': _rating.toString(),
                             'comment': _comment,
                             'created_at': DateTime.now().toString(),
