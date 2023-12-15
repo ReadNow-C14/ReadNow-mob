@@ -20,11 +20,6 @@ class _ReviewPageState extends State<ReviewPage> {
     var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
     var response = await http.get(url, headers: {"Content-Type": "application/json"});
 
-    if (kDebugMode) {
-      print('Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-    }
-
     List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
     return data.map((d) => Review.fromJson(d)).toList();
   }
@@ -70,13 +65,11 @@ class _ReviewPageState extends State<ReviewPage> {
                             children: [
                               Text("User ID: ${review.user}", style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
                               const SizedBox(height: 10),
-                              Text("Book ID: ${review.idBukDb}"),
+                              Text("Book ID: ${review.book}"),
                               const SizedBox(height: 10),
                               Text("Rating: ${review.rating}"),
                               const SizedBox(height: 10),
                               Text("Comment: ${review.comment}"),
-                              const SizedBox(height: 10),
-                              Text("Created At: ${review.createdAt}"),
                             ],
                           ));
                     });
