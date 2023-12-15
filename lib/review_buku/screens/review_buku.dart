@@ -17,9 +17,8 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   Future<List<Review>> fetchReview(request) async {
-    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
+    var url = Uri.parse('http://127.0.0.1:8000/review/get-review-json/${widget.bookid}');
     var response = await http.get(url, headers: {"Content-Type": "application/json"});
-
     List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
     return data.map((d) => Review.fromJson(d)).toList();
   }
