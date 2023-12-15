@@ -42,29 +42,60 @@ class _AddReviewState extends State<AddReview> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Add your comment here'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your review';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _comment = value!;
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Comment",
+                    labelText: "Comment",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _comment = value!;
+                    });
+                  },
+                  onSaved: (String? value) {
+                    setState(() {
+                      // Menambahkan variabel yang sesuai
+                      _comment = value!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Category cannot be empty!";
+                    }
+                    return null;
+                  },
+                ),
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Rating'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your review';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _rating = int.parse(value!);
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Rating",
+                    labelText: "Rating",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      _rating = int.parse(value!);
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return "Rating cannot be empty!";
+                    }
+                    else if (int.tryParse(value) == null) {
+                      return "Rating must be a valid integer!";
+                    }
+                    return null;
+                  },
+                ),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -72,13 +103,12 @@ class _AddReviewState extends State<AddReview> {
                         String username = 'testUser';
                         // Kirim ke Django dan tunggu respons
                         final response = await request.postJson(
-                        "https://readnow-c14-tk.pbp.cs.ui.ac.id/submit-review-flutter/${widget.bookId}",
-                        jsonEncode(<String, String>{
-                            'id_buk_db': widget.bookId.toString(),
-                            'user': username,
-                            'rating': _rating.toString(),
-                            'comment': _comment,
-                            'created_at': DateTime.now().toString(),
+                          "https://readnow-c14-tk.pbp.cs.ui.ac.id/submit-review-flutter/${widget.bookId}",
+                          jsonEncode(<String, String>{
+                              'book': widget.bookId.toString(),
+                              'user': username,
+                              'comment': _comment,
+                              'rating': _rating.toString(),
                         }));
                         if (response['status'] == 'success') {
                             if (!context.mounted) return;
