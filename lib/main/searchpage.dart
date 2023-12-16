@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:readnow_mobile/main/book_details.dart';
 // import 'package:pbp_django_auth/pbp_django_auth.dart';
 // import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
@@ -55,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
                   return const Column(
                     children: [
                       Text(
-                        "Tidak ada data item.",
+                        "No book found.",
                         style:
                             TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
@@ -69,15 +70,30 @@ class _SearchPageState extends State<SearchPage> {
                         crossAxisCount: 2,
                       ),
                       itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => GridTile(
+                      itemBuilder: (_, index) => InkWell(
+                          onTap: () {
+                            // Navigasi ke halaman ItemInformations dengan membawa data item
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookDetails(
+                                  book: snapshot.data![index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: GridTile(
                               child: Column(
                             children: [
                               Image.network(
                                   "${snapshot.data![index].fields.imageUrl}"),
-                              Text("${snapshot.data![index].fields.title}"),
+                              Text(
+                                "${snapshot.data![index].fields.title}",
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               Text("${snapshot.data![index].fields.authors}"),
                             ],
-                          )));
+                          ))));
                 }
               }
             }));

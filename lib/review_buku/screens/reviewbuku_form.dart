@@ -102,7 +102,7 @@ class _AddReviewState extends State<AddReview> {
                         String username = 'testUser';
                         // Kirim ke Django dan tunggu respons
                         final response = await request.postJson(
-                          "http://127.0.0.1:8000/submit-review-flutter/${widget.bookId}",
+                          "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
                           jsonEncode(<String, String>{
                               "book": widget.bookId.toString(),
                               "user": username,
