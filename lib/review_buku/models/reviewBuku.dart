@@ -1,65 +1,41 @@
 // To parse this JSON data, do
 //
-//     final book = bookFromJson(jsonString);
+//     final review = reviewFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Review> bookFromJson(String str) => List<Review>.from(json.decode(str).map((x) => Review.fromJson(x)));
+List<Review> reviewFromJson(String str) => List<Review>.from(json.decode(str).map((x) => Review.fromJson(x)));
 
-String bookToJson(List<Review> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String reviewToJson(List<Review> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Review {
-    String model;
-    int pk;
-    Fields fields;
+    int book;
+    String user;
+    String comment;
+    String createdAt;
+    int rating;
 
     Review({
-        required this.model,
-        required this.pk,
-        required this.fields,
+        required this.book,
+        required this.user,
+        required this.comment,
+        required this.createdAt,
+        required this.rating,
     });
 
     factory Review.fromJson(Map<String, dynamic> json) => Review(
-        model: json["model"],
-        pk: json["pk"],
-        fields: Fields.fromJson(json["fields"]),
-    );
-
-    Map<String, dynamic> toJson() => {
-        "model": model,
-        "pk": pk,
-        "fields": fields.toJson(),
-    };
-}
-
-class Fields {
-    int user;
-    int book;
-    int rating;
-    String comment;
-    DateTime createdAt;
-
-    Fields({
-        required this.user,
-        required this.book,
-        required this.rating,
-        required this.comment,
-        required this.createdAt,
-    });
-
-    factory Fields.fromJson(Map<String, dynamic> json) => Fields(
-        user: json["user"],
         book: json["book"],
-        rating: json["rating"],
+        user: json["user"],
         comment: json["comment"],
-        createdAt: DateTime.parse(json["created_at"]),
+        createdAt: json["created_at"],
+        rating: json["rating"],
     );
 
     Map<String, dynamic> toJson() => {
-        "user": user,
         "book": book,
-        "rating": rating,
+        "user": user,
         "comment": comment,
-        "created_at": createdAt.toIso8601String(),
+        "created_at": createdAt,
+        "rating": rating,
     };
 }
