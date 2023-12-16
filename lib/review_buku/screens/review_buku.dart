@@ -16,11 +16,12 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   int? selectedRating;
-  List<int?> ratings = [null, 1, 2, 3, 4, 5]; // Tambahkan 'null' untuk opsi 'Semua'
 
-  Future<List<Review>> fetchReview(request, [int? rating]) async {
-    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
-    var response = await http.get(url, headers: {"Content-Type": "application/json"});
+  Future<List<Review>> fetchReview([int? rating]) async {
+    var url = Uri.parse(
+        'https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
+    var response =
+        await http.get(url, headers: {"Content-Type": "application/json"});
     List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
     var reviews = data.map((d) => Review.fromJson(d)).toList();
     if (rating != null) {
@@ -32,81 +33,115 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget _buildStars(int count) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(count, (index) => Icon(Icons.star, color: Colors.amber)),
+      children: List.generate(
+          count, (index) => Icon(Icons.star, color: Colors.amber, size: 16)),
+    );
+  }
+
+  Widget _buildRadioButton(int? value, String label) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Radio<int?>(
+            value: value,
+            groupValue: selectedRating,
+            onChanged: (int? newValue) {
+              setState(() {
+                selectedRating = newValue;
+              });
+            },
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Review Book"),
-          actions: <Widget>[
-            // Dropdown untuk memilih rating
-            DropdownButton<int?>(
-              value: selectedRating,
-              hint: Text("Filter Rating"),
-              items: ratings.map<DropdownMenuItem<int?>>((int? value) {
-                return DropdownMenuItem<int?>(
-                  value: value,
-                  child: Text(value == null ? 'All Reviews' : value.toString()),
-                );
-              }).toList(),
-              onChanged: (int? newValue) {
-                setState(() {
-                  selectedRating = newValue;
-                });
-              },
+      appBar: AppBar(
+        title: const Text("Review Book"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add_comment),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => AddReview(bookId: widget.bookid),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Radio buttons for rating, including an option for all reviews
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildRadioButton(null, 'All Reviews'),
+                ...List.generate(
+                    5, (index) => _buildRadioButton(index + 1, '${index + 1}')),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.add_comment),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddReview(bookId: widget.bookid),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-        body: FutureBuilder(
-            future: fetchReview(context.watch<CookieRequest>(), selectedRating),
-            builder: (context, AsyncSnapshot<List<Review>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text("No reviews found"));
-              } else {
-                return ListView.builder(
+          ),
+          Expanded(
+            child: FutureBuilder<List<Review>>(
+              future: fetchReview(selectedRating),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text("No reviews found"));
+                } else {
+                  return ListView.builder(
                     itemCount: snapshot.data!.length,
-                    itemBuilder: (_, index) {
+                    itemBuilder: (BuildContext context, int index) {
                       final review = snapshot.data![index];
                       return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        padding: const EdgeInsets.all(20.0),
+                        height: 136,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8.0),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: const Color(0xFFE0E0E0)),
+                            borderRadius: BorderRadius.circular(8.0)),
+                        padding: const EdgeInsets.all(8),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("User ID: ${review.user}", style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 10),
-                            Text("Rating: ${review.rating}"),
-                            const SizedBox(height: 10),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Comment: ${review.comment}"),
-                                _buildStars(review.rating),
-                              ],
+                            Text(
+                              "User ID: ${review.user}",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
+                            const SizedBox(height: 8),
+                            Text("Comment: ${review.comment}",
+                                style: Theme.of(context).textTheme.caption),
+                            const SizedBox(height: 8),
+                            _buildStars(review.rating),
                           ],
                         ),
                       );
-                    });
-              }
-            }));
+                    },
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

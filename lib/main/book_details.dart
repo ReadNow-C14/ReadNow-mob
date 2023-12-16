@@ -541,7 +541,8 @@ class _BookDetailsState extends State<BookDetails> {
                               onTap: () {
                                 // Navigate to the ReviewPage for the current book
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ReviewPage(bookid: widget.book.pk),
+                                  builder: (context) =>
+                                      ReviewPage(bookid: widget.book.pk),
                                 ));
                               },
                               child: Text(

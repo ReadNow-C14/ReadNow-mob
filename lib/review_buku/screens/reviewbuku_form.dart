@@ -23,7 +23,7 @@ class _AddReviewState extends State<AddReview> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add your Review'),
@@ -81,8 +81,7 @@ class _AddReviewState extends State<AddReview> {
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return "Rating cannot be empty!";
-                    }
-                    else if (int.tryParse(value) == null) {
+                    } else if (int.tryParse(value) == null) {
                       return "Rating must be a valid integer!";
                     }
                     return null;
@@ -91,36 +90,34 @@ class _AddReviewState extends State<AddReview> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                        String username = 'testUser';
-                        // Kirim ke Django dan tunggu respons
-                        final response = await request.postJson(
-                          "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
-                          jsonEncode(<String, String>{
-                              "book": widget.bookId.toString(),
-                              "user": username,
-                              "comment": _comment,
-                              "rating": _rating.toString(),
-                              "created_at": DateTime.now().toString()
+                  if (_formKey.currentState!.validate()) {
+                    // Kirim ke Django dan tunggu respons
+                    final response = await request.postJson(
+                        "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
+                        jsonEncode(<String, String>{
+                          "book": widget.bookId.toString(),
+                          "comment": _comment,
+                          "rating": _rating.toString(),
+                          "created_at": DateTime.now().toString()
                         }));
-                        if (response['status'] == 'success') {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                            content: Text("Review Anda berhasil ditambahkan!"),
-                            ));
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(builder: (context) => ReviewPage(bookid: widget.bookId,)),
-                            );
-                        } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                                content:
-                                    Text("Terdapat kesalahan, silakan coba lagi."),
-                            ));
-                        }
+                    if (response['status'] == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Review Anda berhasil ditambahkan!"),
+                      ));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ReviewPage(
+                                  bookid: widget.bookId,
+                                )),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Terdapat kesalahan, silakan coba lagi."),
+                      ));
                     }
-                  },
+                  }
+                },
                 child: Text('Submit Review'),
               ),
             ],
