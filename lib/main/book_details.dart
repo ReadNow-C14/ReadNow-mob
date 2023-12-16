@@ -5,6 +5,7 @@ import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
+import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -536,13 +537,21 @@ class _BookDetailsState extends State<BookDetails> {
                           Container(
                             // addyourreviewQHH (108:1867)
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
-                            child: Text(
-                              'Add your review',
-                              style: GoogleFonts.poppins(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                height: 3.6363636364,
-                                color: const Color(0xff77777a),
+                            child: InkWell(
+                              onTap: () {
+                                // Navigate to the ReviewPage for the current book
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ReviewPage(bookid: widget.book.pk),
+                                ));
+                              },
+                              child: Text(
+                                'Add your review',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  height: 3.6363636364,
+                                  color: const Color(0xff77777a),
+                                ),
                               ),
                             ),
                           ),

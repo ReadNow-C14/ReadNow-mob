@@ -20,13 +20,6 @@ class _AddReviewState extends State<AddReview> {
   int _rating = 1;
   String _comment = "";
 
-  // void _submitReview() {
-  //   if (_formKey.currentState!.validate()) {
-  //     _formKey.currentState!.save();
-  //     Navigator.of(context).pop(); // Close the screen after submission
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -111,7 +104,6 @@ class _AddReviewState extends State<AddReview> {
                               "created_at": DateTime.now().toString()
                         }));
                         if (response['status'] == 'success') {
-                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                             content: Text("Review Anda berhasil ditambahkan!"),
@@ -121,7 +113,6 @@ class _AddReviewState extends State<AddReview> {
                                 MaterialPageRoute(builder: (context) => ReviewPage(bookid: widget.bookId,)),
                             );
                         } else {
-                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                                 content:
