@@ -15,11 +15,18 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
-  Future<List<Review>> fetchReview(request) async {
+  int? selectedRating;
+  List<int?> ratings = [null, 1, 2, 3, 4, 5]; // Tambahkan 'null' untuk opsi 'Semua'
+
+  Future<List<Review>> fetchReview(request, [int? rating]) async {
     var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.bookid}');
     var response = await http.get(url, headers: {"Content-Type": "application/json"});
     List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-    return data.map((d) => Review.fromJson(d)).toList();
+    var reviews = data.map((d) => Review.fromJson(d)).toList();
+    if (rating != null) {
+      reviews = reviews.where((review) => review.rating == rating).toList();
+    }
+    return reviews;
   }
 
   Widget _buildStars(int count) {
@@ -35,6 +42,22 @@ class _ReviewPageState extends State<ReviewPage> {
         appBar: AppBar(
           title: const Text("Review Book"),
           actions: <Widget>[
+            // Dropdown untuk memilih rating
+            DropdownButton<int?>(
+              value: selectedRating,
+              hint: Text("Filter Rating"),
+              items: ratings.map<DropdownMenuItem<int?>>((int? value) {
+                return DropdownMenuItem<int?>(
+                  value: value,
+                  child: Text(value == null ? 'All Reviews' : value.toString()),
+                );
+              }).toList(),
+              onChanged: (int? newValue) {
+                setState(() {
+                  selectedRating = newValue;
+                });
+              },
+            ),
             IconButton(
               icon: Icon(Icons.add_comment),
               onPressed: () {
@@ -48,7 +71,7 @@ class _ReviewPageState extends State<ReviewPage> {
           ],
         ),
         body: FutureBuilder(
-            future: fetchReview(context.watch<CookieRequest>()),
+            future: fetchReview(context.watch<CookieRequest>(), selectedRating),
             builder: (context, AsyncSnapshot<List<Review>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -69,8 +92,6 @@ class _ReviewPageState extends State<ReviewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("User ID: ${review.user}", style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 10),
-                            Text("Book ID: ${review.book}"),
                             const SizedBox(height: 10),
                             Text("Rating: ${review.rating}"),
                             const SizedBox(height: 10),
