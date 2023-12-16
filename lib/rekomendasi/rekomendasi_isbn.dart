@@ -6,7 +6,6 @@ import 'package:readnow_mobile/models/book.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
 
-
 class RekomendasiISBN extends StatefulWidget {
   final String isbn;
   const RekomendasiISBN({Key? key, required this.isbn}) : super(key: key);
@@ -19,7 +18,6 @@ class RekomendasiISBN extends StatefulWidget {
 class _RekomendasiISBNState extends State<RekomendasiISBN> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
-
 
   @override
   void dispose() {
@@ -196,7 +194,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                         itemBuilder: (_, index) => GridTile(
                               child: Container(
                                 // 7WT (1:2768)
-                                margin: const EdgeInsets.fromLTRB(13, 0, 13, 20),
+                                margin:
+                                    const EdgeInsets.fromLTRB(13, 0, 13, 20),
                                 width: double.infinity,
                                 height: 142,
                                 child: Stack(
@@ -333,7 +332,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w800,
                                                   height: 1.255,
-                                                  color: const Color(0xff202244),
+                                                  color:
+                                                      const Color(0xff202244),
                                                 ),
                                               ),
                                             ),
@@ -347,7 +347,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                   height: 1.255,
-                                                  color: const Color(0xff000000),
+                                                  color:
+                                                      const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -392,8 +393,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
                                               height: 1.255,
-                                              color:
-                                                  const Color.fromARGB(255, 0, 0, 0),
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0),
                                             ),
                                           ),
                                         ),
