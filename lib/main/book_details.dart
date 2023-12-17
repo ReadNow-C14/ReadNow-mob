@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
+import 'package:readnow_mobile/pinjam_buku/screens/pinjam_buku_form.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -800,7 +801,9 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     InkWell(
                         onTap: () {
-                          if (kDebugMode) print("Menekan tombol pinjam");
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BorrowFormPage(bookid: widget.book.pk)
+                          ));
                         },
                         child: Container(
                           // frame107NB (I78:939;74:806)
