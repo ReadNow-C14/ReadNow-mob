@@ -6,23 +6,26 @@ import 'package:provider/provider.dart';
 // import 'package:pbp_django_auth/pbp_django_auth.dart';
 // import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
-import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
 
 class RekomendasiFilter extends StatefulWidget {
   final int publishedYear;
   final int bookId;
-  const RekomendasiFilter({Key? key, required this.publishedYear, required this.bookId})
+  const RekomendasiFilter(
+      {Key? key, required this.publishedYear, required this.bookId})
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RekomendasiFilterState createState() => _RekomendasiFilterState();
 }
 
 class _RekomendasiFilterState extends State<RekomendasiFilter> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
+  String _isbn = "";
+  int _publishYearInput = 0;
 
   @override
   void dispose() {
@@ -33,23 +36,25 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
   Future<List<Book>> filterBook(int publishedYear) async {
     int bookId = widget.bookId;
     final request = context.watch<CookieRequest>();
-    var response = await request.postJson("http://127.0.0.1:8000/rekomendasi/json/$bookId", jsonEncode(<String, int>{
+    var response = await request.postJson(
+        "https://readnow-c14-tk.pbp.cs.ui.ac.id/rekomendasi/json/$bookId",
+        jsonEncode(<String, int>{
           'publishedYear': publishedYear,
         }));
     // melakukan decode response menjadi bentuk json
     var data = response;
 
     // melakukan konversi data json menjadi object Product
-    List<Book> list_recommendation = [];
+    List<Book> listRecommendation = [];
     for (var d in data) {
       if (d != null) {
-        list_recommendation.add(Book.fromJson(d));
+        listRecommendation.add(Book.fromJson(d));
       }
     }
     if (kDebugMode) {
-      print(list_recommendation.length);
+      print(listRecommendation.length);
     }
-    return list_recommendation;
+    return listRecommendation;
   }
 
   @override
@@ -68,10 +73,10 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
             child: Column(children: [
           // ================================= Field Search by ISBN =================================
           Container(
-            margin: EdgeInsets.fromLTRB(13, 10, 19.66, 10),
-            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+            margin: const EdgeInsets.fromLTRB(13, 10, 19.66, 10),
+            padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -88,10 +93,10 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                 hintStyle: GoogleFonts.mulish(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xffb4bdc4),
+                  color: const Color(0xffb4bdc4),
                 ),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Image.asset("assets/images/search.png",
                       width: 30, height: 30),
                 ),
@@ -100,24 +105,35 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Color(0xffffffff),
-                contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                fillColor: const Color(0xffffffff),
+                contentPadding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
               ),
               onFieldSubmitted: (String value) {
                 isbnController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiISBN(
-                      isbn: value), // Mengirim ISBN ke RecommendationPage
+                      isbn: _isbn), // Mengirim ISBN ke RecommendationPage
                 ));
+              },
+              onChanged: (String? value) {
+                setState(() {
+                  _isbn = value!;
+                });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "ISBN tidak boleh kosong!";
+                }
+                return null;
               },
             ),
           ),
           // ================================= Filter PublishedYear =================================
           Container(
-            margin: EdgeInsets.fromLTRB(13, 0, 19.66, 10),
-            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+            margin: const EdgeInsets.fromLTRB(13, 0, 19.66, 10),
+            padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
             decoration: BoxDecoration(
-              color: Color(0xffffffff),
+              color: const Color(0xffffffff),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -135,7 +151,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                 hintStyle: GoogleFonts.mulish(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xffb4bdc4),
+                  color: const Color(0xffb4bdc4),
                 ),
                 prefixIcon: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -149,16 +165,31 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Color(0xffffffff),
-                contentPadding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                fillColor: const Color(0xffffffff),
+                contentPadding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
               ),
               onFieldSubmitted: (String value) {
                 publishYearController.clear();
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => RekomendasiFilter(
-                      publishedYear: int.parse(
-                          value), bookId: bookId), // Mengirim publishedYear ke RekomendasiFilter
+                      publishedYear: _publishYearInput,
+                      bookId:
+                          bookId), // Mengirim publishedYear ke RekomendasiFilter
                 ));
+              },
+              onChanged: (String? value) {
+                setState(() {
+                  _publishYearInput = int.parse(value!);
+                });
+              },
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return "Publish Year tidak boleh kosong!";
+                }
+                if (int.tryParse(value) == null) {
+                  return "Publish Year harus berupa angka!";
+                }
+                return null;
               },
             ),
           ),
@@ -167,7 +198,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
               future: filterBook(publishedYear),
               builder: (context, AsyncSnapshot snapshot) {
                 if (snapshot.data == null) {
-                  return const Center(child: Text("Data is null or not found"));
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   if (!snapshot.hasData) {
                     return const Column(
@@ -184,12 +215,13 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                     return ListView.builder(
                         shrinkWrap: true, // Menambahkan ini
                         physics:
-                            NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
+                            const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
                               child: Container(
                                 // 7WT (1:2768)
-                                margin: EdgeInsets.fromLTRB(13, 0, 13, 20),
+                                margin:
+                                    const EdgeInsets.fromLTRB(13, 0, 13, 20),
                                 width: double.infinity,
                                 height: 142,
                                 child: Stack(
@@ -206,7 +238,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(16),
-                                              color: Color(0xffffffff),
+                                              color: const Color(0xffffffff),
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: Color(0x14000000),
@@ -265,7 +297,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,
                                               height: 1.255,
-                                              color: Color(0xffff6b00),
+                                              color: const Color(0xffff6b00),
                                             ),
                                             // overflow: TextOverflow.ellipsis,
                                           ),
@@ -286,7 +318,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600,
                                               height: 1.445,
-                                              color: Color(0xff202244),
+                                              color: const Color(0xff202244),
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -297,7 +329,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                       // starDbR (1:2773)
                                       left: 143.9998779297,
                                       top: 73,
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 141,
                                         height: 19,
                                         child: Row(
@@ -306,7 +338,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                           children: [
                                             Container(
                                               // starLg3 (1:2774)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 3, 2.6),
                                               width: 12,
                                               height: 11.4,
@@ -318,7 +350,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                             ),
                                             Container(
                                               // FY7 (1:2777)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 8, 0),
                                               child: Text(
                                                 "${snapshot.data![index].fields.rating}",
@@ -326,13 +358,14 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w800,
                                                   height: 1.255,
-                                                  color: Color(0xff202244),
+                                                  color:
+                                                      const Color(0xff202244),
                                                 ),
                                               ),
                                             ),
                                             Container(
                                               // n2F (1:2778)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 8, 1),
                                               child: Text(
                                                 '|',
@@ -340,13 +373,14 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                   height: 1.255,
-                                                  color: Color(0xff000000),
+                                                  color:
+                                                      const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
                                             Container(
                                               // starLg3 (1:2774)
-                                              margin: EdgeInsets.fromLTRB(
+                                              margin: const EdgeInsets.fromLTRB(
                                                   0, 0, 3, 2.6),
                                               width: 12,
                                               height: 11.4,
@@ -363,7 +397,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w800,
                                                 height: 1.255,
-                                                color: Color(0xff202244),
+                                                color: const Color(0xff202244),
                                               ),
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -385,8 +419,8 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
                                               height: 1.255,
-                                              color:
-                                                  Color.fromARGB(255, 0, 0, 0),
+                                              color: const Color.fromARGB(
+                                                  255, 0, 0, 0),
                                             ),
                                           ),
                                         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:readnow_mobile/main/searchpage.dart';
+import 'package:readnow_mobile/main/login.dart';
+//import 'package:readnow_mobile/main/searchpage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: SearchPage(),
+        home: LoginPage(),
       ),
     );
   }
