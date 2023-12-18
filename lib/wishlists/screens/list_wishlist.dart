@@ -46,6 +46,8 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -63,16 +65,34 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                 // return const Center(child: CircularProgressIndicator());
                 return const Center(child: Text("Data is null or not found"));
               } else {
-                if (!snapshot.hasData) {
-                  return const Column(
-                    children: [
-                      Text(
-                        "Tidak ada data produk.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.favorite_border,
+                          size: width*0.3 <= 200 ? width * 0.3 : 200,
+                        ),
+                        Text(
+                          "No book found.",
+                          style: TextStyle(
+                            fontSize: width*0.1 <= 20 ? width * 0.1 : 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                        ),
+                        Text(
+                          "You can add book to wishlist by clicking the heart icon on the book details page.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: width*0.1 <= 20 ? width * 0.1 : 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 } else {
                   return ListView.builder(
