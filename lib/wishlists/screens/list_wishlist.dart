@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:readnow_mobile/main/book_details.dart';
 import 'dart:convert';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:readnow_mobile/wishlists/utilities/cards.dart';
-import 'package:readnow_mobile/wishlists/utilities/white_box.dart';
 import 'package:readnow_mobile/wishlists/widgets/left_drawer_wishlist.dart';
 
 class MyWishlistPage extends StatefulWidget {
@@ -77,7 +77,18 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                   return ListView.builder(
                       shrinkWrap: true, // Menambahkan ini
                       itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => GridTile(
+                      itemBuilder: (_, index) => InkWell(
+                            onTap: () {
+                              // Navigasi ke halaman ItemInformations dengan membawa data item
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BookDetails(
+                                    book: snapshot.data![index],
+                                  ),
+                                ),
+                              );
+                            },
                             child: WishlistCard(book: snapshot.data![index],)
                           ));
                 }
