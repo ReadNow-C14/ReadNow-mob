@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
 import 'dart:convert';
 import 'package:readnow_mobile/models/book.dart';
@@ -16,22 +18,20 @@ class MyWishlistPage extends StatefulWidget {
 }
 
 class _MyWishlistPageState extends State<MyWishlistPage> {
+  // Variable
+  List<Book> list_wishlist = [];
   // Fetching data
-  Future<List<Book>> fetchWishlist() async {
+  Future<List<Book>> fetchWishlist(CookieRequest cookieRequest) async {
     // TODO: Ubah url sesuai dengan wishilst
-    var url = Uri.parse(
-        'http://127.0.0.1:8000/wishlist/get-wishlist/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
+    var response = await cookieRequest.get(
+      "http://127.0.0.1:8000/wishlist/get-wishlist/"
     );
 
-    // decode response menjadi bentuk json
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    print(response);
+    list_wishlist = [];
 
     // konversi json menjadi object Product
-    List<Book> list_wishlist = [];
-    for (var d in data) {
+    for (var d in response) {
       if (d != null) {
         list_wishlist.add(Book.fromJson(d));
       }
@@ -45,6 +45,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
   // Menampilkan data
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -55,7 +56,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
         drawer: const TemporaryLeftDrawerWishlist(),
         // ================== Menampilkan seluruh Wishlist yang ada ==================
         body: FutureBuilder(
-            future: fetchWishlist(),
+            future: fetchWishlist(request),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 // TODO: Ubah jdi circular
@@ -89,15 +90,34 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                 ),
                               );
                             },
-                            child: WishlistCard(book: snapshot.data![index], onTap: () => removeItem(index))
+                            child: WishlistCard(book: snapshot.data![index], onTap: () => removeItem(snapshot.data![index].pk, request))
                           ));
                 }
               }
             }));
   }
   
-  removeItem(int index) {
-    setState(() {
-    });
+  removeItem(int id, CookieRequest request) async {
+    // final response = request.postJson(
+    //   jsonEncode(<String, String>{
+    //     // 'book_id': list_wishlist[index].pk.toString(),
+    //     'book_id': "-1",
+    //   })
+    // );
+    final response = await request.post('http://127.0.0.1:8000/wishlist/remove-wishlist-flutter/${id}/',{});
+    if (response["status"] == "success") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Item removed from wishlist'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to remove item from wishlist'),
+        ),
+      );
+    }
+    setState(() {});
   }
 }
