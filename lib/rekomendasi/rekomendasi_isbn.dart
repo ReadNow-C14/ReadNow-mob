@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
+
 
 class RekomendasiISBN extends StatefulWidget {
   final String isbn;
@@ -18,6 +20,7 @@ class RekomendasiISBN extends StatefulWidget {
 class _RekomendasiISBNState extends State<RekomendasiISBN> {
   TextEditingController isbnController = TextEditingController();
   TextEditingController publishYearController = TextEditingController();
+
 
   @override
   void dispose() {
@@ -192,10 +195,16 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                             const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
+                              child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => BookDetails(
+                                        book: snapshot.data![
+                                            index]))); // Melakukan pop pada navigator ketika diklik
+                              },
                               child: Container(
                                 // 7WT (1:2768)
-                                margin:
-                                    const EdgeInsets.fromLTRB(13, 0, 13, 20),
+                                margin: const EdgeInsets.fromLTRB(13, 0, 13, 20),
                                 width: double.infinity,
                                 height: 142,
                                 child: Stack(
@@ -332,8 +341,7 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w800,
                                                   height: 1.255,
-                                                  color:
-                                                      const Color(0xff202244),
+                                                  color: const Color(0xff202244),
                                                 ),
                                               ),
                                             ),
@@ -347,8 +355,7 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w700,
                                                   height: 1.255,
-                                                  color:
-                                                      const Color(0xff000000),
+                                                  color: const Color(0xff000000),
                                                 ),
                                               ),
                                             ),
@@ -393,8 +400,8 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                               fontSize: 12,
                                               fontWeight: FontWeight.w800,
                                               height: 1.255,
-                                              color: const Color.fromARGB(
-                                                  255, 0, 0, 0),
+                                              color:
+                                                  const Color.fromARGB(255, 0, 0, 0),
                                             ),
                                           ),
                                         ),
@@ -403,7 +410,7 @@ class _RekomendasiISBNState extends State<RekomendasiISBN> {
                                   ],
                                 ),
                               ),
-                            ));
+                            )));
                   }
                 }
               })
