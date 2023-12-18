@@ -3,8 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-// import 'package:pbp_django_auth/pbp_django_auth.dart';
-// import 'package:provider/provider.dart';
+import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
@@ -218,6 +217,13 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                             const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
+                              child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => BookDetails(
+                                        book: snapshot.data![
+                                            index]))); // Melakukan pop pada navigator ketika diklik
+                              },
                               child: Container(
                                 // 7WT (1:2768)
                                 margin:
@@ -429,7 +435,7 @@ class _RekomendasiFilterState extends State<RekomendasiFilter> {
                                   ],
                                 ),
                               ),
-                            ));
+                            )));
                   }
                 }
               })

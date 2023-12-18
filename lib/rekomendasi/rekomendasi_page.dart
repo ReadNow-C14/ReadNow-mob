@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
@@ -212,6 +213,13 @@ class _RecommendationPageState extends State<RecommendationPage> {
                             const NeverScrollableScrollPhysics(), // Mencegah ListView sendiri dapat di-scroll
                         itemCount: snapshot.data!.length,
                         itemBuilder: (_, index) => GridTile(
+                                child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => BookDetails(
+                                        book: snapshot.data![
+                                            index]))); // Melakukan pop pada navigator ketika diklik
+                              },
                               child: Container(
                                 // 7WT (1:2768)
                                 margin:
@@ -423,7 +431,7 @@ class _RecommendationPageState extends State<RecommendationPage> {
                                   ],
                                 ),
                               ),
-                            ));
+                            )));
                   }
                 }
               })
