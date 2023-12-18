@@ -89,10 +89,15 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                                 ),
                               );
                             },
-                            child: WishlistCard(book: snapshot.data![index],)
+                            child: WishlistCard(book: snapshot.data![index], onTap: () => removeItem(index))
                           ));
                 }
               }
             }));
+  }
+  
+  removeItem(int index) {
+    setState(() {
+    });
   }
 }

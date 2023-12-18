@@ -4,7 +4,8 @@ import 'package:readnow_mobile/models/book.dart';
 
 class WishlistCard extends StatelessWidget {
   Book book;
-  WishlistCard({Key? key, required this.book}) : super(key: key);
+  final VoidCallback onTap;
+  WishlistCard({Key? key, required this.book, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class WishlistCard extends StatelessWidget {
           // Title Beres
           Positioned(
             // graphicdesignadvanvMR (1:2772)
-            left: width*0.35,
+            left: width*0.05+containerHeight*0.9,
             top: containerHeight*0.22,
             child: Align(
               child: SizedBox(
@@ -69,7 +70,7 @@ class WishlistCard extends StatelessWidget {
           // Author Beres
           Positioned(
             // graphicdesignRfZ (1:2771)
-            left: width*0.35,
+            left: width*0.05+containerHeight*0.9,
             top: containerHeight*0.4,
             child: Align(
               child: SizedBox(
@@ -91,7 +92,7 @@ class WishlistCard extends StatelessWidget {
           // Rating & Pages Beres
           Positioned(
             // starDbR (1:2773)
-            left: width*0.35,
+            left: width*0.05+containerHeight*0.9,
             top: containerHeight*0.50,
             child: Container(
               width: 141,
@@ -175,7 +176,7 @@ class WishlistCard extends StatelessWidget {
           // ISBN Beres
           Positioned(
             // viewcertificatepjd (1:2780)
-            left: width*0.35,
+            left: width*0.05+containerHeight*0.9,
             top: containerHeight*0.65,
             child: Align(
               child: SizedBox(
@@ -198,9 +199,7 @@ class WishlistCard extends StatelessWidget {
             left: width*0.75,
             top: containerHeight*0.7,
             child: InkWell(
-              onTap: () {
-                
-              },
+              onTap: onTap,
               child: Center(
                 child: CircleAvatar(
                   backgroundColor: Colors.yellow,
@@ -213,7 +212,7 @@ class WishlistCard extends StatelessWidget {
           // Shading Beres
           Positioned(
             // rectangle280dCo (68:657)
-            left: width*0.05+containerHeight*0.05,
+            left: width*0.05+containerHeight*0.1,
             top: containerHeight*0.05,
             child: Container(
               child: SizedBox(
