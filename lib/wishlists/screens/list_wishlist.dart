@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
+import 'package:readnow_mobile/main/searchpage.dart';
 import 'dart:convert';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:readnow_mobile/wishlists/utilities/cards.dart';
@@ -24,6 +25,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
   Future<List<Book>> fetchWishlist(CookieRequest cookieRequest) async {
     // TODO: Ubah url sesuai dengan wishilst
     var response = await cookieRequest.get(
+      // TODO: change to deployed server
       "http://127.0.0.1:8000/wishlist/get-wishlist/"
     );
 
@@ -73,12 +75,15 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                         Icon(
                           Icons.favorite_border,
                           size: width*0.3 <= 200 ? width * 0.3 : 200,
+                          color: Colors.grey[500],
                         ),
                         Text(
-                          "No book found.",
+                          "Your Wishlist is Empty.",
                           style: TextStyle(
                             fontSize: width*0.1 <= 20 ? width * 0.1 : 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey[500],
                           ),
                         ),
                         Padding(
@@ -89,6 +94,44 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: width*0.1 <= 20 ? width * 0.1 : 15,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SearchPage(),
+                              ),
+                            );
+                          },
+                          onHover: (value) {
+                            
+                          },
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(4, 4),
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              "Search for Books",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: width*0.1 <= 25 ? width * 0.1 : 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ],
