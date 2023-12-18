@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:readnow_mobile/review_buku/models/reviewBuku.dart';
 import 'package:readnow_mobile/review_buku/screens/reviewbuku_form.dart';
@@ -109,8 +107,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       final review = snapshot.data![index];
                       return Container(
                         height: 136,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
                         decoration: BoxDecoration(
                             border: Border.all(color: const Color(0xFFE0E0E0)),
                             borderRadius: BorderRadius.circular(8.0)),
@@ -119,22 +116,27 @@ class _ReviewPageState extends State<ReviewPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              review.user,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    review.user,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                _buildStars(review.rating),
+                              ],
                             ),
                             const SizedBox(height: 8),
                             Text(
                               review.comment,
-                                style: Theme.of(context).textTheme.bodySmall),
+                              style: Theme.of(context).textTheme.bodySmall),
                             const SizedBox(height: 8),
-                            _buildStars(review.rating),
                             Text(
                               review.createdAt,
-                                style: Theme.of(context).textTheme.bodySmall),
+                              style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
                       );
