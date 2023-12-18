@@ -120,17 +120,21 @@ class _ReviewPageState extends State<ReviewPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "User ID: ${review.user}",
+                              review.user,
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 8),
-                            Text("Comment: ${review.comment}",
-                                style: Theme.of(context).textTheme.caption),
+                            Text(
+                              review.comment,
+                                style: Theme.of(context).textTheme.bodySmall),
                             const SizedBox(height: 8),
                             _buildStars(review.rating),
+                            Text(
+                              review.createdAt,
+                                style: Theme.of(context).textTheme.bodySmall),
                           ],
                         ),
                       );
