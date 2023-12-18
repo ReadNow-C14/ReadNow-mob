@@ -10,27 +10,28 @@ class WishlistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width  = MediaQuery.of(context).size.width;
+    var containerHeight = height*0.18;
     return Container(
       // 7WT (1:2768)
-      margin: EdgeInsets.fromLTRB(13, 0, 13, 20),
+      margin: EdgeInsets.fromLTRB(width*0.01, height*0.03, width*0.01, height*0.01),
       width: double.infinity,
-      height: height*0.1,
+      height: containerHeight,
       child: Stack(
         children: [
-          // Box Row
+          // Box Row Beres
           Positioned(
             // rectangle39D (1:2769)
-            left: 0,
-            top: 0.013*height,
+            left: width*0.05,
+            top: containerHeight*0.05,
             child: Align(
               child: SizedBox(
-                width: 380,
-                height: 134,
+                width: width,
+                height: containerHeight*0.85,
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(10),
-                    color: Color(0xffffffff),
+                    color: Color.fromARGB(255, 240, 240, 240),
                     boxShadow: const [
                       BoxShadow(
                         color: Color(0x14000000),
@@ -43,48 +44,37 @@ class WishlistCard extends StatelessWidget {
               ),
             ),
           ),
-          // Gambar
+          // Title Beres
           Positioned(
-            // imageKcX (1:2770)
-            left: 0,
-            top: 8,
+            // graphicdesignadvanvMR (1:2772)
+            left: width*0.35,
+            top: containerHeight*0.22,
             child: Align(
               child: SizedBox(
-                width: 110,
-                height: 134,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xff000000),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
+                width: width*0.55,
+                height: 24,
+                child: Text(
+                  "${book.fields.title}",
+                  style: GoogleFonts.jost(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    height: 1.445,
+                    color: Color(0xff202244),
                   ),
-                  child: ClipRRect(
-                    borderRadius:
-                        const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
-                    child: Image.network(
-                      "${book.fields.imageUrl}",
-                      fit: BoxFit
-                          .cover, // Atur fit ke BoxFit.cover
-                    ),
-                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ),
-          // Author
+          // Author Beres
           Positioned(
             // graphicdesignRfZ (1:2771)
-            left: 144,
-            top: 23,
+            left: width*0.35,
+            top: containerHeight*0.4,
             child: Align(
               child: SizedBox(
-                width: 150,
-                height: 16,
+                width: width*0.55,
+                height: 24,
                 child: Text(
                   "${book.fields.authors}",
                   style: GoogleFonts.mulish(
@@ -98,33 +88,11 @@ class WishlistCard extends StatelessWidget {
               ),
             ),
           ),
-          // Title
-          Positioned(
-            // graphicdesignadvanvMR (1:2772)
-            left: 144,
-            top: 44,
-            child: Align(
-              child: SizedBox(
-                width: 210,
-                height: 24,
-                child: Text(
-                  "${book.fields.title}",
-                  style: GoogleFonts.jost(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    height: 1.445,
-                    color: Color(0xff202244),
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          ),
-          // Rating & Pages
+          // Rating & Pages Beres
           Positioned(
             // starDbR (1:2773)
-            left: 143.9998779297,
-            top: 73,
+            left: width*0.35,
+            top: containerHeight*0.50,
             child: Container(
               width: 141,
               height: 19,
@@ -204,11 +172,11 @@ class WishlistCard extends StatelessWidget {
               ),
             ),
           ),
-          // ISBN
+          // ISBN Beres
           Positioned(
             // viewcertificatepjd (1:2780)
-            left: 144,
-            top: 105,
+            left: width*0.35,
+            top: containerHeight*0.65,
             child: Align(
               child: SizedBox(
                 width: 200,
@@ -221,6 +189,62 @@ class WishlistCard extends StatelessWidget {
                     height: 1.255,
                     color: Color.fromARGB(255, 0, 0, 0),
                   ),
+                ),
+              ),
+            ),
+          ),
+          // Remove
+          Positioned(
+            left: width*0.75,
+            top: containerHeight*0.7,
+            child: InkWell(
+              onTap: () {
+                
+              },
+              child: Center(
+                child: CircleAvatar(
+                  backgroundColor: Colors.yellow,
+                  radius: containerHeight*0.15,
+                  child: Icon(Icons.delete_outline),
+                ),
+              ),
+            ),
+          ),
+          // Shading Beres
+          Positioned(
+            // rectangle280dCo (68:657)
+            left: width*0.05+containerHeight*0.05,
+            top: containerHeight*0.05,
+            child: Container(
+              child: SizedBox(
+                width: containerHeight*0.95*0.69,
+                height: containerHeight*0.95,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
+                    color: Color(0xfffce76c),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Gambar Beres
+          Positioned(
+            // imageKcX (1:2770)
+            left: width*0.05,
+            top: 0,
+            child: Container(
+              // rectangle278Eif (68:628)
+              margin: const EdgeInsets.fromLTRB(
+                  0, 0, 20, 4),
+              width: containerHeight*0.95*0.69,
+              height: containerHeight*0.95,
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(7),
+                child: Image.network(
+                  book.fields.imageUrl,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
