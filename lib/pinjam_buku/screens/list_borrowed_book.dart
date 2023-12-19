@@ -43,45 +43,24 @@ class _BorrowedBookPageState extends State<BorrowedBookPage>{
                       crossAxisAlignment:  CrossAxisAlignment.center,
                       children:  [
                         Container(
-                          // autogrouptgkuczF (DBzzdgspGjkpaJGDEhTgKu)
-                          margin:  EdgeInsets.fromLTRB(0, 0, 128, 180),
-                          width:  double.infinity,
-                          child:
-                          Row(
-                            crossAxisAlignment:  CrossAxisAlignment.start,
-                            children:  [
-                              Container(
-                                // youareborrowingbooksfornowMgw (90:1023)
-                                margin:  EdgeInsets.fromLTRB(0, 0, 9, 0),
-                                constraints:  BoxConstraints (
-                                  maxWidth:  199,
-                                ),
-                                child:
-                                Text(
-                                  'You are borrowing\nbook(s) for now.',
-                                  style:  GoogleFonts.poppins (
-                                    fontSize:  21,
-                                    fontWeight:  FontWeight.w700,
-                                    height:  1.4285714286,
-                                    color:  Color(0xff000000),
-                                  ),
-                                ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 180),  // Adjust the margin as needed
+                          child: RichText(
+                            textAlign: TextAlign.left,  // Align text to the left
+                            text: TextSpan(
+                              style: GoogleFonts.poppins(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff000000),
                               ),
-                              Container(
-                                // csm (90:1025)
-                                margin:  EdgeInsets.fromLTRB(0, 1, 0, 0),
-                                child:
-                                Text(
-                                  '0',
-                                  style:  GoogleFonts.poppins (
-                                    fontSize:  21,
-                                    fontWeight:  FontWeight.w700,
-                                    height:  1.4285714286,
-                                    color:  Color(0xff8bd0fc),
-                                  ),
+                              children: <TextSpan>[
+                                TextSpan(text: 'You are borrowing '),
+                                TextSpan(
+                                  text: '0',
+                                  style: TextStyle(color: Color(0xff8bd0fc)),
                                 ),
-                              ),
-                            ],
+                                TextSpan(text: ' \nbook(s) for now.'),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
