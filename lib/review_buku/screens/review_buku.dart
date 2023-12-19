@@ -77,32 +77,15 @@ class _ReviewPageState extends State<ReviewPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-      ),
+          icon: Icon(Icons.arrow_back_ios), // This sets the icon to arrow_back_ios
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text("Review Book"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add_comment),
-            onPressed: () async {
-              final result = await Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddReview(bookId: widget.bookid),
-                ),
-              );
-
-              if (result == true) {
-                _loadReviews(); // Reload reviews after returning from AddReview
-              }
-            },
-          ),
-        ],
       ),
       body: Column(
         children: [
-          // Radio buttons for rating
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -114,55 +97,99 @@ class _ReviewPageState extends State<ReviewPage> {
               ],
             ),
           ),
-          // Review list
           Expanded(
             child: reviews == null
                 ? const Center(child: CircularProgressIndicator())
                 : reviews!.isEmpty
-                  ? const Center(child: Text("No Reviews yet")) // Tampilkan ini jika tidak ada review
+                  ? const Center(child: Text("No Reviews yet"))
                   : ListView.builder(
-                      itemCount: reviews!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final review = reviews![index];
-                        return Container(
-                          height: 136,
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: const Color(0xFFE0E0E0)),
-                              borderRadius: BorderRadius.circular(8.0)),
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      review.user,
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                    itemCount: reviews!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final review = reviews![index];
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    review.user,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  _buildStars(review.rating),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
+                                ),
+                                _buildStars(review.rating),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Flexible(
+                              child: Text(
                                 review.comment,
-                                style: Theme.of(context).textTheme.bodySmall),
-                              const SizedBox(height: 8),
-                              Text(
-                                review.createdAt,
-                                style: Theme.of(context).textTheme.bodySmall),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                                style: Theme.of(context).textTheme.bodySmall,
+                                overflow: TextOverflow.fade, // Use fade or ellipsis for long texts
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              review.createdAt,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent, // Makes the modal background transparent
+            isScrollControlled: true,
+            builder: (BuildContext context) {
+              return DraggableScrollableSheet(
+                initialChildSize: 0.5, // Half the screen height
+                maxChildSize: 0.5, // Prevents the sheet from taking up full screen
+                builder: (_, scrollController) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Background color for the modal
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16),
+                      ),
+                    ),
+                    child: AddReview(bookId: widget.bookid),
+                  );
+                },
+              );
+            },
+          ).then((value) {
+            if (value == true) {
+              _loadReviews();
+            }
+          });
+        },
+        child: Icon(Icons.add_comment),
       ),
     );
   }
