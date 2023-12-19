@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:readnow_mobile/models/book.dart';
 
 class BorrowFormPage extends StatefulWidget {
-  const BorrowFormPage({super.key, required int bookid});
+  final Book book;
+  const BorrowFormPage({super.key, required this.book});
 
   @override
   State<BorrowFormPage> createState() => _BorrowFormPageState();
@@ -17,6 +19,7 @@ class _BorrowFormPageState extends State<BorrowFormPage>{
 
   @override
   Widget build(BuildContext context) {
+    Book book = widget.book;
     final request = context.watch<CookieRequest>();
 
     return Scaffold(
@@ -25,15 +28,15 @@ class _BorrowFormPageState extends State<BorrowFormPage>{
             padding: const EdgeInsets.all(30),
             child: TextField(
               controller: _dateController,
-              decoration: const InputDecoration(
-                labelText: 'RETURN DATE',
+              decoration: InputDecoration(
+                labelText: '${book.fields.numOfPages} pages',
                 filled: true,
                 prefixIcon: Icon(Icons.calendar_today),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none
+                    borderSide: BorderSide.none
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.blue)
+                    borderSide: BorderSide(color: Colors.blue)
                 ),
               ),
               readOnly: true,
