@@ -11,7 +11,7 @@ class WishlistCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width  = MediaQuery.of(context).size.width;
-    var containerHeight = height*0.18;
+    var containerHeight = height*0.16;
     return Container(
       // 7WT (1:2768)
       margin: EdgeInsets.fromLTRB(width*0.01, height*0.03, width*0.01, height*0.01),
@@ -49,7 +49,7 @@ class WishlistCard extends StatelessWidget {
           Positioned(
             // graphicdesignadvanvMR (1:2772)
             left: width*0.05+containerHeight*0.9,
-            top: containerHeight*0.22,
+            top: containerHeight*0.17,
             child: Align(
               child: SizedBox(
                 width: width*0.55,
@@ -93,7 +93,7 @@ class WishlistCard extends StatelessWidget {
           Positioned(
             // starDbR (1:2773)
             left: width*0.05+containerHeight*0.9,
-            top: containerHeight*0.50,
+            top: containerHeight*0.51,
             child: Container(
               width: 141,
               height: 19,
@@ -177,7 +177,7 @@ class WishlistCard extends StatelessWidget {
           Positioned(
             // viewcertificatepjd (1:2780)
             left: width*0.05+containerHeight*0.9,
-            top: containerHeight*0.65,
+            top: containerHeight*0.7,
             child: Align(
               child: SizedBox(
                 width: 200,
