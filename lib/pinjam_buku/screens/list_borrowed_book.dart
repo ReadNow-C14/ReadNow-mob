@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readnow_mobile/main/searchpage.dart';
+import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
 
 class BorrowedBookPage extends StatefulWidget {
   const BorrowedBookPage({Key? key}) : super(key: key);
@@ -41,45 +43,24 @@ class _BorrowedBookPageState extends State<BorrowedBookPage>{
                       crossAxisAlignment:  CrossAxisAlignment.center,
                       children:  [
                         Container(
-                          // autogrouptgkuczF (DBzzdgspGjkpaJGDEhTgKu)
-                          margin:  EdgeInsets.fromLTRB(0, 0, 128, 180),
-                          width:  double.infinity,
-                          child:
-                          Row(
-                            crossAxisAlignment:  CrossAxisAlignment.start,
-                            children:  [
-                              Container(
-                                // youareborrowingbooksfornowMgw (90:1023)
-                                margin:  EdgeInsets.fromLTRB(0, 0, 9, 0),
-                                constraints:  BoxConstraints (
-                                  maxWidth:  199,
-                                ),
-                                child:
-                                Text(
-                                  'You are borrowing\nbook(s) for now.',
-                                  style:  GoogleFonts.poppins (
-                                    fontSize:  21,
-                                    fontWeight:  FontWeight.w700,
-                                    height:  1.4285714286,
-                                    color:  Color(0xff000000),
-                                  ),
-                                ),
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 180),  // Adjust the margin as needed
+                          child: RichText(
+                            textAlign: TextAlign.left,  // Align text to the left
+                            text: TextSpan(
+                              style: GoogleFonts.poppins(
+                                fontSize: 21,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xff000000),
                               ),
-                              Container(
-                                // csm (90:1025)
-                                margin:  EdgeInsets.fromLTRB(0, 1, 0, 0),
-                                child:
-                                Text(
-                                  '0',
-                                  style:  GoogleFonts.poppins (
-                                    fontSize:  21,
-                                    fontWeight:  FontWeight.w700,
-                                    height:  1.4285714286,
-                                    color:  Color(0xff8bd0fc),
-                                  ),
+                              children: <TextSpan>[
+                                TextSpan(text: 'You are borrowing '),
+                                TextSpan(
+                                  text: '0',
+                                  style: TextStyle(color: Color(0xff8bd0fc)),
                                 ),
-                              ),
-                            ],
+                                TextSpan(text: ' \nbook(s) for now.'),
+                              ],
+                            ),
                           ),
                         ),
                         Container(
@@ -99,32 +80,37 @@ class _BorrowedBookPageState extends State<BorrowedBookPage>{
                           ),
                         ),
                         Container(
-                          // returnbuttonAXu (90:1044)
-                          margin:  EdgeInsets.fromLTRB(86, 0, 87, 0),
-                          width:  double.infinity,
-                          height:  40,
-                          decoration:  BoxDecoration (
-                            color:  Color(0xfffce76c),
-                            borderRadius:  BorderRadius.circular(20),
-                            boxShadow:  [
+                          margin: EdgeInsets.fromLTRB(86, 0, 87, 0),
+                          width: double.infinity,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xfffce76c),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
                               BoxShadow(
-                                color:  Color(0x3f000000),
-                                offset:  Offset(0, 4),
-                                blurRadius:  2,
+                                color: Color(0x3f000000),
+                                offset: Offset(0, 4),
+                                blurRadius: 2,
                               ),
                             ],
                           ),
-                          child:
-                          Center(
-                            child:
-                            Text(
-                              'Search for books',
-                              textAlign:  TextAlign.center,
-                              style:  GoogleFonts.poppins (
-                                fontSize:  15,
-                                fontWeight:  FontWeight.w700,
-                                height:  2,
-                                color:  Color(0xff000000),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 1))
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                'Search for books',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  height: 2,
+                                  color: Color(0xff000000),
+                                ),
                               ),
                             ),
                           ),

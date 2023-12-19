@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
-// Import your Review model and any other necessary imports
 
 class AddReview extends StatefulWidget {
   final int bookId;
@@ -17,7 +16,7 @@ class AddReview extends StatefulWidget {
 
 class _AddReviewState extends State<AddReview> {
   final _formKey = GlobalKey<FormState>();
-  int _rating = 1;
+  double _rating = 1.0; // Rating as a double
   String _comment = "";
 
   @override
@@ -37,6 +36,26 @@ class _AddReviewState extends State<AddReview> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
+                child: RatingBar.builder(
+                  initialRating: _rating,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false, // Set to false to only allow whole numbers
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    setState(() {
+                      _rating = rating;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: "Comment",
@@ -50,39 +69,9 @@ class _AddReviewState extends State<AddReview> {
                       _comment = value!;
                     });
                   },
-                  onSaved: (String? value) {
-                    setState(() {
-                      _comment = value!;
-                    });
-                  },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return "Category cannot be empty!";
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Rating",
-                    labelText: "Rating",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _rating = int.parse(value!);
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Rating cannot be empty!";
-                    } else if (int.tryParse(value) == null) {
-                      return "Rating must be a valid integer!";
+                      return "Comment cannot be empty!";
                     }
                     return null;
                   },
@@ -91,29 +80,26 @@ class _AddReviewState extends State<AddReview> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Kirim ke Django dan tunggu respons
+                    // Send to Django and wait for response
                     final response = await request.postJson(
-                        "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
-                        jsonEncode(<String, String>{
-                          "book": widget.bookId.toString(),
-                          "comment": _comment,
-                          "rating": _rating.toString(),
-                          "created_at": DateTime.now().toString()
-                        }));
+                      "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
+                      jsonEncode(<String, String>{
+                        "book": widget.bookId.toString(),
+                        "comment": _comment,
+                        "rating": _rating.toString(),
+                        "created_at": DateTime.now().toString()
+                      }),
+                    );
                     if (response['status'] == 'success') {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Review Anda berhasil ditambahkan!"),
+                        content: Text("Your review has been added successfully!"),
                       ));
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ReviewPage(
-                                  bookid: widget.bookId,
-                                )),
-                      );
+                      
+                      // Ini adalah penambahan. Navigator.pop dengan nilai 'true'
+                      Navigator.pop(context, true);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Terdapat kesalahan, silakan coba lagi."),
+                        content: Text("There was an error, please try again."),
                       ));
                     }
                   }
