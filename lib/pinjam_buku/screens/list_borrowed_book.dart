@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readnow_mobile/main/searchpage.dart';
+import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
 
 class BorrowedBookPage extends StatefulWidget {
   const BorrowedBookPage({Key? key}) : super(key: key);
@@ -99,32 +101,37 @@ class _BorrowedBookPageState extends State<BorrowedBookPage>{
                           ),
                         ),
                         Container(
-                          // returnbuttonAXu (90:1044)
-                          margin:  EdgeInsets.fromLTRB(86, 0, 87, 0),
-                          width:  double.infinity,
-                          height:  40,
-                          decoration:  BoxDecoration (
-                            color:  Color(0xfffce76c),
-                            borderRadius:  BorderRadius.circular(20),
-                            boxShadow:  [
+                          margin: EdgeInsets.fromLTRB(86, 0, 87, 0),
+                          width: double.infinity,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Color(0xfffce76c),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
                               BoxShadow(
-                                color:  Color(0x3f000000),
-                                offset:  Offset(0, 4),
-                                blurRadius:  2,
+                                color: Color(0x3f000000),
+                                offset: Offset(0, 4),
+                                blurRadius: 2,
                               ),
                             ],
                           ),
-                          child:
-                          Center(
-                            child:
-                            Text(
-                              'Search for books',
-                              textAlign:  TextAlign.center,
-                              style:  GoogleFonts.poppins (
-                                fontSize:  15,
-                                fontWeight:  FontWeight.w700,
-                                height:  2,
-                                color:  Color(0xff000000),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 1))
+                              );
+                            },
+                            child: Center(
+                              child: Text(
+                                'Search for books',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  height: 2,
+                                  color: Color(0xff000000),
+                                ),
                               ),
                             ),
                           ),
