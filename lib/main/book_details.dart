@@ -821,8 +821,8 @@ class _BookDetailsState extends State<BookDetails> {
                     InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  BorrowFormPage(bookid: widget.book.pk)));
+                              builder: (context) => BorrowFormPage(book: book)
+                          ));
                         },
                         child: Container(
                           // frame107NB (I78:939;74:806)
