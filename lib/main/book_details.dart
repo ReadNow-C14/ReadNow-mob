@@ -558,11 +558,12 @@ class _BookDetailsState extends State<BookDetails> {
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
                             child: InkWell(
                               onTap: () {
-                                // Navigate to the ReviewPage for the current book
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ReviewPage(bookid: widget.book.pk),
-                                ));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReviewPage(bookid: widget.book.pk),
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Add your review',
