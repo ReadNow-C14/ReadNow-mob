@@ -94,14 +94,9 @@ class _AddReviewState extends State<AddReview> {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Your review has been added successfully!"),
                       ));
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ReviewPage(
-                            bookid: widget.bookId,
-                          ),
-                        ),
-                      );
+                      
+                      // Ini adalah penambahan. Navigator.pop dengan nilai 'true'
+                      Navigator.pop(context, true);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("There was an error, please try again."),
