@@ -6,7 +6,6 @@ import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/main/searchpage.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:readnow_mobile/wishlists/utilities/cards.dart';
-import 'package:readnow_mobile/wishlists/widgets/left_drawer_wishlist.dart';
 
 // menyimpan id buku yang ada di wishlist
 final List<int> wishlistBookId = <int>[];
@@ -137,8 +136,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                         onHover: (value) {},
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                          padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                           decoration: BoxDecoration(
                             color: Colors.yellow,
                             borderRadius: BorderRadius.circular(20),
@@ -155,8 +153,7 @@ class _MyWishlistPageState extends State<MyWishlistPage> {
                             "Search for Books",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize:
-                                  width * 0.1 <= 25 ? width * 0.1 : 25,
+                              fontSize: width * 0.1 <= 25 ? width * 0.1 : 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
