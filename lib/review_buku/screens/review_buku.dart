@@ -14,6 +14,20 @@ class ReviewPage extends StatefulWidget {
 
 class _ReviewPageState extends State<ReviewPage> {
   int? selectedRating;
+  List<Review>? reviews;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReviews();
+  }
+
+  Future<void> _loadReviews() async {
+    var fetchedReviews = await fetchReview(selectedRating);
+    setState(() {
+      reviews = fetchedReviews;
+    });
+  }
 
   Future<List<Review>> fetchReview([int? rating]) async {
     var url = Uri.parse(
@@ -48,6 +62,7 @@ class _ReviewPageState extends State<ReviewPage> {
             onChanged: (int? newValue) {
               setState(() {
                 selectedRating = newValue;
+                _loadReviews(); // Refresh reviews on rating selection
               });
             },
           ),
@@ -61,23 +76,33 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
         title: const Text("Review Book"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add_comment),
-            onPressed: () {
-              Navigator.of(context).push(
+            onPressed: () async {
+              final result = await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => AddReview(bookId: widget.bookid),
                 ),
               );
+
+              if (result == true) {
+                _loadReviews(); // Reload reviews after returning from AddReview
+              }
             },
           ),
         ],
       ),
       body: Column(
         children: [
-          // Radio buttons for rating, including an option for all reviews
+          // Radio buttons for rating
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -89,62 +114,53 @@ class _ReviewPageState extends State<ReviewPage> {
               ],
             ),
           ),
+          // Review list
           Expanded(
-            child: FutureBuilder<List<Review>>(
-              future: fetchReview(selectedRating),
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text("No reviews found"));
-                } else {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final review = snapshot.data![index];
-                      return Container(
-                        height: 136,
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xFFE0E0E0)),
-                            borderRadius: BorderRadius.circular(8.0)),
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    review.user,
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+            child: reviews == null
+                ? const Center(child: CircularProgressIndicator())
+                : reviews!.isEmpty
+                  ? const Center(child: Text("No Reviews yet")) // Tampilkan ini jika tidak ada review
+                  : ListView.builder(
+                      itemCount: reviews!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final review = reviews![index];
+                        return Container(
+                          height: 136,
+                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: const Color(0xFFE0E0E0)),
+                              borderRadius: BorderRadius.circular(8.0)),
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      review.user,
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
-                                ),
-                                _buildStars(review.rating),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              review.comment,
-                              style: Theme.of(context).textTheme.bodySmall),
-                            const SizedBox(height: 8),
-                            Text(
-                              review.createdAt,
-                              style: Theme.of(context).textTheme.bodySmall),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+                                  _buildStars(review.rating),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                review.comment,
+                                style: Theme.of(context).textTheme.bodySmall),
+                              const SizedBox(height: 8),
+                              Text(
+                                review.createdAt,
+                                style: Theme.of(context).textTheme.bodySmall),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
           ),
         ],
       ),
