@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:readnow_mobile/main/searchpage.dart';
+import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
 import 'package:readnow_mobile/styles/colors.dart';
 import 'package:readnow_mobile/styles/fonts.dart';
 import 'package:readnow_mobile/main/register.dart';
@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SearchPage()),
+                                builder: (context) => BottomNav()),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
