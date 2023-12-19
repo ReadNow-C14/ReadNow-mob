@@ -4,6 +4,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/list_borrowed_book.dart';
 import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
+import 'package:intl/intl.dart';
 
 class BorrowFormPage extends StatefulWidget {
   final Book book;
@@ -69,7 +70,8 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
 
     if (_picked != null) {
       setState(() {
-        _dateController.text = _picked.toString().split(" ")[0];
+        // Format the date as DD/MM/YYYY
+        _dateController.text = DateFormat('dd/MM/yyyy').format(_picked);
       });
     }
   }
@@ -79,6 +81,8 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
         context,
         MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2))
     );
+    print("tess");
+    print(_dateController.text);
     if (_formKey.currentState!.validate()) {
       // Perform save operation and navigate to another page
       Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2)));
