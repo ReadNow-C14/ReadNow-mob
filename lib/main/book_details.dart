@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/pinjam_buku_form.dart';
+import 'package:readnow_mobile/wishlists/screens/list_wishlist.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -27,7 +30,7 @@ class _BookDetailsState extends State<BookDetails> {
     super.dispose();
   }
 
-  Future<List<Book>> fetchBook() async {
+  Future<List<Book>> fetchBook(CookieRequest cookieRequest) async {
     // final request = context.watch<CookieRequest>();
     Book book = widget.book;
     var urlWithId =
@@ -49,11 +52,26 @@ class _BookDetailsState extends State<BookDetails> {
         listRecommendation.add(Book.fromJson(d));
       }
     }
+
+    // ==================== fetching Wishlist ====================
+    var responseWishlist = await cookieRequest.get(
+        "https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/get-wishlist/");
+    wishlistBookId.clear();
+    // konversi json menjadi object Product
+    for (var d in responseWishlist) {
+      if (d != null) {
+        wishlistBookId.add(d["pk"]);
+      }
+    }
+    // ============================================================
+
     return listRecommendation;
   }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    bool isWishlist = false;
     Book book = widget.book;
     Status status = book.fields.status; // ini adalah enum value
     String statusString = statusValues.reverse[status] ??
@@ -649,7 +667,7 @@ class _BookDetailsState extends State<BookDetails> {
                     //   color: Color(0xff8bd0fc),
                     // ),
                     child: FutureBuilder(
-                        future: fetchBook(),
+                        future: fetchBook(request),
                         builder: (context, AsyncSnapshot snapshot) {
                           if (snapshot.data == null) {
                             return const Center(
@@ -803,8 +821,8 @@ class _BookDetailsState extends State<BookDetails> {
                     InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BorrowFormPage(bookid: widget.book.pk)
-                          ));
+                              builder: (context) =>
+                                  BorrowFormPage(bookid: widget.book.pk)));
                         },
                         child: Container(
                           // frame107NB (I78:939;74:806)
@@ -833,15 +851,106 @@ class _BookDetailsState extends State<BookDetails> {
                           ),
                         )),
                     Container(
-                        // vectornDR (I78:939;75:809)
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
-                        width: 26,
-                        height: 23,
-                        child: const Icon(Icons.favorite_border_rounded,
-                            size: 26)),
+                      // vectornDR (I78:939;75:809)
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
+                      width: 26,
+                      height: 23,
+                      child: InkWell(
+                          onTap: () async {
+                            if (isWishlist) {
+                              removeItem(book.pk, request);
+                              // setState
+                              wishlistBookId.remove(book.pk);
+                              isWishlist = false;
+                            } else {
+                              final response = await request.post(
+                                  'https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/add-wishlist-flutter/${widget.book.pk}/',
+                                  {});
+                              if (response["status"] == "success") {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Item added to wishlist'),
+                                    ),
+                                  );
+                                }
+                                wishlistBookId.add(book.pk);
+                              } else {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          'Failed to add this book to wishlist'),
+                                    ),
+                                  );
+                                }
+                              }
+                              // set state
+                              wishlistBookId.add(book.pk);
+                              isWishlist = true;
+                            }
+                            setState(() {
+                              if (kDebugMode){
+                                print("setState!: $isWishlist");
+                              }
+                            });
+                          },
+                          child: FutureBuilder(
+                              future: fetchBook(request),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                for (var id in wishlistBookId) {
+                                  if (id == widget.book.pk) {
+                                    isWishlist = true;
+                                    break;
+                                  } else {
+                                    isWishlist = false;
+                                  }
+                                }
+                                if (snapshot.data == null ||
+                                    !snapshot.hasData) {
+                                  return const Center(
+                                      child: Icon(Icons.favorite_border_rounded,
+                                          size: 26));
+                                } else {
+                                  if (kDebugMode) {
+                                    // print("is ${book.fields.title} Wishlist? $isWishlist");
+                                  }
+                                  return Center(
+                                    child: isWishlist
+                                        ? const Icon(Icons.favorite)
+                                        : const Icon(
+                                            Icons.favorite_border_rounded,
+                                            size: 26),
+                                  );
+                                }
+                              })),
+                    ),
                   ],
                 ),
               ),
             )));
+  }
+
+  removeItem(int id, CookieRequest request) async {
+    final response = await request.post(
+        'https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/remove-wishlist-flutter/$id/',
+        {});
+    if (response["status"] == "success") {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Item removed from wishlist'),
+          ),
+        );
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to remove item from wishlist'),
+          ),
+        );
+      }
+    }
   }
 }
