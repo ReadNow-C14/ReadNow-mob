@@ -56,8 +56,8 @@ class _BookDetailsState extends State<BookDetails> {
     }
 
     // ==================== fetching Wishlist ====================
-    var responseWishlist = await cookieRequest.get(
-        "https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/get-wishlist/");
+    var responseWishlist = await cookieRequest
+        .get("https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/get-wishlist/");
     wishlistBookId.clear();
     // konversi json menjadi object Product
     for (var d in responseWishlist) {
@@ -71,8 +71,10 @@ class _BookDetailsState extends State<BookDetails> {
   }
 
   Future<List<Review>> fetchTwoReviews() async {
-    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.book.pk}');
-    var response = await http.get(url, headers: {"Content-Type": "application/json"});
+    var url = Uri.parse(
+        'https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.book.pk}');
+    var response =
+        await http.get(url, headers: {"Content-Type": "application/json"});
     List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
     List<Review> reviews = data.map((d) => Review.fromJson(d)).toList();
     return reviews.take(2).toList(); // Limit to 2 reviews
@@ -85,7 +87,7 @@ class _BookDetailsState extends State<BookDetails> {
       // ignore: prefer_interpolation_to_compose_strings
       truncatedComment = truncatedComment.substring(0, 20) + '...';
     }
-    
+
     return ListTile(
       title: Text(
         review.user,
@@ -100,7 +102,8 @@ class _BookDetailsState extends State<BookDetails> {
           fontSize: 12,
           fontWeight: FontWeight.w400,
         ),
-        overflow: TextOverflow.ellipsis, // Ensures text ends with ellipsis if it overflows
+        overflow: TextOverflow
+            .ellipsis, // Ensures text ends with ellipsis if it overflows
       ),
       trailing: _buildStars(review.rating),
     );
@@ -114,9 +117,11 @@ class _BookDetailsState extends State<BookDetails> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-          return Expanded( // This will take all available space for the ListView
+          return Expanded(
+            // This will take all available space for the ListView
             child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(), // To prevent scrolling within the ListView
+              physics:
+                  const NeverScrollableScrollPhysics(), // To prevent scrolling within the ListView
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return _buildReview(snapshot.data![index]);
@@ -139,7 +144,8 @@ class _BookDetailsState extends State<BookDetails> {
   Widget _buildStars(int count) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(count, (index) => const Icon(Icons.star, color: Colors.amber, size: 16)),
+      children: List.generate(count,
+          (index) => const Icon(Icons.star, color: Colors.amber, size: 16)),
     );
   }
 
@@ -148,6 +154,7 @@ class _BookDetailsState extends State<BookDetails> {
     final request = context.watch<CookieRequest>();
     bool isWishlist = false;
     Book book = widget.book;
+    var height = MediaQuery.of(context).size.height;
     Status status = book.fields.status; // ini adalah enum value
     String statusString = statusValues.reverse[status] ??
         'Available'; // ini mengonversi enum ke string
@@ -159,7 +166,8 @@ class _BookDetailsState extends State<BookDetails> {
             SizedBox(
                 // autogroupmnefJHH (4nWivJaxzYJUzRapFrMneF)
                 width: double.infinity,
-                height: 410,
+                // height: 410,
+                height: height * 0.48,
                 child: Stack(
                   children: [
                     Positioned(
@@ -599,7 +607,8 @@ class _BookDetailsState extends State<BookDetails> {
             SizedBox(
                 // autogroupmnefJHH (4nWivJaxzYJUzRapFrMneF)
                 width: double.infinity,
-                height: 200,
+                // height: 200,
+                height: height * 0.25,
                 child: Stack(
                   children: [
                     Container(
@@ -610,7 +619,8 @@ class _BookDetailsState extends State<BookDetails> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -627,7 +637,9 @@ class _BookDetailsState extends State<BookDetails> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ReviewPage(bookid: widget.book.pk, bookTitle: book.fields.title),
+                                        builder: (context) => ReviewPage(
+                                            bookid: widget.book.pk,
+                                            bookTitle: book.fields.title),
                                       ),
                                     );
                                   },
@@ -645,7 +657,7 @@ class _BookDetailsState extends State<BookDetails> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          _buildReviewList(), 
+                          _buildReviewList(),
                         ],
                       ),
                     ),
@@ -654,7 +666,8 @@ class _BookDetailsState extends State<BookDetails> {
             SizedBox(
                 // autogroupmnefJHH (4nWivJaxzYJUzRapFrMneF)
                 width: double.infinity,
-                height: 48,
+                // height: 48,
+                height: height * 0.07,
                 child: Stack(
                   children: [
                     Container(
@@ -713,10 +726,11 @@ class _BookDetailsState extends State<BookDetails> {
                     )
                   ],
                 )),
-            Positioned(
+            SizedBox(
                 // autogroupbtwwerf (4nWi7AGrNp67AkZ9jtBtWw)
-                left: 22,
-                top: 800,
+                width: double.infinity,
+                // top: 800,
+                height: height * 0.2,
                 child: SizedBox(
                     width: 420,
                     height: 150,
@@ -758,10 +772,8 @@ class _BookDetailsState extends State<BookDetails> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                BookDetails(
-                                              book: snapshot.data![index]
-                                            ),
+                                            builder: (context) => BookDetails(
+                                                book: snapshot.data![index]),
                                           ),
                                         );
                                       },
@@ -858,154 +870,151 @@ class _BookDetailsState extends State<BookDetails> {
             onTap: () {
               if (kDebugMode) print("Menekan tombol wishlist");
             },
-            child: Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0, // Menempelkan ke bawah layar
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
-                height: 60,
-                decoration: const BoxDecoration(
-                  color: Color(0xfffce76c),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                  ),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(0, 0, 35, 0),
+              height: 60,
+              decoration: const BoxDecoration(
+                color: Color(0xfffce76c),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                        onTap: statusString == "Available" ? () {
-                          showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return DraggableScrollableSheet(
-                                initialChildSize: 0.35,
-                                maxChildSize: 0.35,
-                                builder: (_, scrollController) {
-                                  return Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(16),
-                                        topRight: Radius.circular(16),
-                                      ),
-                                    ),
-                                    child: BorrowFormPage(book: book),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: statusString == "Available"
+                          ? () {
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return DraggableScrollableSheet(
+                                    initialChildSize: 0.35,
+                                    maxChildSize: 0.35,
+                                    builder: (_, scrollController) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(16),
+                                            topRight: Radius.circular(16),
+                                          ),
+                                        ),
+                                        child: BorrowFormPage(book: book),
+                                      );
+                                    },
                                   );
                                 },
                               );
-                            },
-                          );
-                        } : null,
-                        child: Container(
-                          // frame107NB (I78:939;74:806)
-                          margin: const EdgeInsets.fromLTRB(0, 0, 34, 0),
-                          width: 295,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                            color: statusString == "Available"
-                                ? const Color(0xff8bd0fc)
-                                : const Color.fromARGB(255, 197, 197, 197),
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              statusString == "Available" ? 'Borrow this book'
-                                  : 'Available at: ${book.fields.returnDate != null ? DateFormat('dd-MM-yyyy').format(book.fields.returnDate!) : 'Unavailable'}',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                fontSize: statusString == "Available" ? 17 : 17,
-                                fontWeight: FontWeight.w700,
-                                height: 2.3529411765,
-                                color: const Color(0xff000000),
-                              ),
-                            ),
-
-                          ),
-                        )),
-                    Container(
-                      // vectornDR (I78:939;75:809)
-                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
-                      width: 26,
-                      height: 23,
-                      child: InkWell(
-                          onTap: () async {
-                            if (isWishlist) {
-                              removeItem(book.pk, request);
-                              // setState
-                              wishlistBookId.remove(book.pk);
-                              isWishlist = false;
-                            } else {
-                              final response = await request.post(
-                                  'https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/add-wishlist-flutter/${widget.book.pk}/',
-                                  {});
-                              if (response["status"] == "success") {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Item added to wishlist'),
-                                    ),
-                                  );
-                                }
-                                wishlistBookId.add(book.pk);
-                              } else {
-                                if (mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                          'Failed to add this book to wishlist'),
-                                    ),
-                                  );
-                                }
-                              }
-                              // set state
-                              wishlistBookId.add(book.pk);
-                              isWishlist = true;
                             }
-                            setState(() {
-                              if (kDebugMode){
-                                print("setState!: $isWishlist");
+                          : null,
+                      child: Container(
+                        // frame107NB (I78:939;74:806)
+                        margin: const EdgeInsets.fromLTRB(0, 0, 34, 0),
+                        width: 295,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          color: statusString == "Available"
+                              ? const Color(0xff8bd0fc)
+                              : const Color.fromARGB(255, 197, 197, 197),
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            statusString == "Available"
+                                ? 'Borrow this book'
+                                : 'Available at: ${book.fields.returnDate != null ? DateFormat('dd-MM-yyyy').format(book.fields.returnDate!) : 'Unavailable'}',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              fontSize: statusString == "Available" ? 17 : 17,
+                              fontWeight: FontWeight.w700,
+                              height: 2.3529411765,
+                              color: const Color(0xff000000),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Container(
+                    // vectornDR (I78:939;75:809)
+                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
+                    width: 26,
+                    height: 23,
+                    child: InkWell(
+                        onTap: () async {
+                          if (isWishlist) {
+                            removeItem(book.pk, request);
+                            // setState
+                            wishlistBookId.remove(book.pk);
+                            isWishlist = false;
+                          } else {
+                            final response = await request.post(
+                                'https://readnow-c14-tk.pbp.cs.ui.ac.id/wishlist/add-wishlist-flutter/${widget.book.pk}/',
+                                {});
+                            if (response["status"] == "success") {
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Item added to wishlist'),
+                                  ),
+                                );
                               }
-                            });
-                          },
-                          child: FutureBuilder(
-                              future: fetchBook(request),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                for (var id in wishlistBookId) {
-                                  if (id == widget.book.pk) {
-                                    isWishlist = true;
-                                    break;
-                                  } else {
-                                    isWishlist = false;
-                                  }
-                                }
-                                if (snapshot.data == null ||
-                                    !snapshot.hasData) {
-                                  return const Center(
-                                      child: Icon(Icons.favorite_border_rounded,
-                                          size: 26));
+                              wishlistBookId.add(book.pk);
+                            } else {
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Failed to add this book to wishlist'),
+                                  ),
+                                );
+                              }
+                            }
+                            // set state
+                            wishlistBookId.add(book.pk);
+                            isWishlist = true;
+                          }
+                          setState(() {
+                            if (kDebugMode) {
+                              print("setState!: $isWishlist");
+                            }
+                          });
+                        },
+                        child: FutureBuilder(
+                            future: fetchBook(request),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              for (var id in wishlistBookId) {
+                                if (id == widget.book.pk) {
+                                  isWishlist = true;
+                                  break;
                                 } else {
-                                  if (kDebugMode) {
-                                    // print("is ${book.fields.title} Wishlist? $isWishlist");
-                                  }
-                                  return Center(
-                                    child: isWishlist
-                                        ? const Icon(Icons.favorite)
-                                        : const Icon(
-                                            Icons.favorite_border_rounded,
-                                            size: 26),
-                                  );
+                                  isWishlist = false;
                                 }
-                              })),
-                    ),
-                  ],
-                ),
+                              }
+                              if (snapshot.data == null ||
+                                  !snapshot.hasData) {
+                                return const Center(
+                                    child: Icon(Icons.favorite_border_rounded,
+                                        size: 26));
+                              } else {
+                                if (kDebugMode) {
+                                  // print("is ${book.fields.title} Wishlist? $isWishlist");
+                                }
+                                return Center(
+                                  child: isWishlist
+                                      ? const Icon(Icons.favorite)
+                                      : const Icon(
+                                          Icons.favorite_border_rounded,
+                                          size: 26),
+                                );
+                              }
+                            })),
+                  ),
+                ],
               ),
             )));
   }
