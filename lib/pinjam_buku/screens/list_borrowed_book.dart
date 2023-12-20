@@ -135,6 +135,7 @@ import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:readnow_mobile/wishlists/utilities/cards.dart';
+import 'package:readnow_mobile/pinjam_buku/widgets/borrowed_book_card.dart';
 
 // menyimpan id buku yang ada di wishlist
 final List<int> borrowedBookId = <int>[];
@@ -178,6 +179,7 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: height * 0.1 <= 150 ? height * 0.1 : 150,
         scrolledUnderElevation: 5,
         surfaceTintColor: Colors.transparent,
@@ -212,6 +214,7 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
             ),
           ],
         ),
+
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
@@ -276,7 +279,7 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
                             ),
                           );
                         },
-                        child: WishlistCard(
+                        child: BorrowedCard(
                             book: snapshot.data![index],
                             onTap: () => removeItem(
                                 snapshot.data![index].pk, request))));
