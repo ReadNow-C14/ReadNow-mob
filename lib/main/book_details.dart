@@ -10,6 +10,8 @@ import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/pinjam_buku_form.dart';
 import 'package:readnow_mobile/wishlists/screens/list_wishlist.dart';
+import 'package:readnow_mobile/review_buku/models/reviewBuku.dart';
+import 'package:intl/intl.dart';
 
 class BookDetails extends StatefulWidget {
   final Book book;
@@ -68,6 +70,78 @@ class _BookDetailsState extends State<BookDetails> {
     return listRecommendation;
   }
 
+  Future<List<Review>> fetchTwoReviews() async {
+    var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/review/get-review-json/${widget.book.pk}');
+    var response = await http.get(url, headers: {"Content-Type": "application/json"});
+    List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
+    List<Review> reviews = data.map((d) => Review.fromJson(d)).toList();
+    return reviews.take(2).toList(); // Limit to 2 reviews
+  }
+
+  // Use a ListTile for better default spacing and leading/trailing widgets.
+  Widget _buildReview(Review review) {
+    String truncatedComment = review.comment;
+    if (truncatedComment.length > 20) {
+      truncatedComment = truncatedComment.substring(0, 20) + '...';
+    }
+    
+    return ListTile(
+      title: Text(
+        review.user,
+        style: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: Text(
+        truncatedComment,
+        style: GoogleFonts.poppins(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        overflow: TextOverflow.ellipsis, // Ensures text ends with ellipsis if it overflows
+      ),
+      trailing: _buildStars(review.rating),
+    );
+  }
+
+  // Ensure you have an Expanded widget when building the review list
+  Widget _buildReviewList() {
+    return FutureBuilder<List<Review>>(
+      future: fetchTwoReviews(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          return Expanded( // This will take all available space for the ListView
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(), // To prevent scrolling within the ListView
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return _buildReview(snapshot.data![index]);
+              },
+            ),
+          );
+        } else {
+          return const Text(
+            'No Reviews yet.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildStars(int count) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(count, (index) => Icon(Icons.star, color: Colors.amber, size: 16)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -78,12 +152,6 @@ class _BookDetailsState extends State<BookDetails> {
         'Available'; // ini mengonversi enum ke string
     return Scaffold(
         backgroundColor: const Color(0xFFF5F9FF),
-        // appBar: AppBar(
-        //   title: const Text('Book Recommendation'),
-        //   backgroundColor: const Color.fromARGB(255, 139, 209, 252),
-        //   foregroundColor: Colors.black,
-        // ),
-        // drawer: const LeftDrawer(),
         body: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -537,59 +605,47 @@ class _BookDetailsState extends State<BookDetails> {
                       // autogroupk1ejkiX (4nWokqCCk4MdJuHfWRk1Ej)
                       margin: const EdgeInsets.fromLTRB(21, 0, 38, 34),
                       width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            // reviewsHiT (108:1865)
-                            margin: const EdgeInsets.fromLTRB(0, 1, 185, 0),
-                            child: Text(
-                              'Reviews',
-                              style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                height: 3.0769230769,
-                                color: const Color(0xff000000),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            // addyourreviewQHH (108:1867)
-                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 1),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReviewPage(bookid: widget.book.pk),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Reviews',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                );
-                              },
-                              child: Text(
-                                'Add your review',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  height: 3.6363636364,
-                                  color: const Color(0xff77777a),
                                 ),
-                              ),
+                                InkWell(
+                                  onTap: () {
+                                    // Navigate to add review page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ReviewPage(bookid: widget.book.pk, bookTitle: book.fields.title),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    'Add your review',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      height: 3.6363636364,
+                                      color: const Color(0xff77777a),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          const SizedBox(height: 16),
+                          _buildReviewList(), 
                         ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment
-                          .center, // Menempatkan teks di tengah container
-                      child: Text(
-                        'No reviews yet.',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff77777a),
-                        ),
                       ),
                     ),
                   ],
@@ -697,13 +753,13 @@ class _BookDetailsState extends State<BookDetails> {
                                       : snapshot.data!.length,
                                   itemBuilder: (_, index) => InkWell(
                                       onTap: () {
-                                        // Navigasi ke halaman ItemInformations dengan membawa data item
+                                        // Navigasi ke halaman Itemindexations dengan membawa data item
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                RecommendationPage(
-                                              book: book,
+                                                BookDetails(
+                                              book: snapshot.data![index]
                                             ),
                                           ),
                                         );
@@ -819,11 +875,31 @@ class _BookDetailsState extends State<BookDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BorrowFormPage(book: book)
-                          ));
-                        },
+                        onTap: statusString == "Available" ? () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return DraggableScrollableSheet(
+                                initialChildSize: 0.35,
+                                maxChildSize: 0.35,
+                                builder: (_, scrollController) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        topRight: Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: BorrowFormPage(book: book),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        } : null,
                         child: Container(
                           // frame107NB (I78:939;74:806)
                           margin: const EdgeInsets.fromLTRB(0, 0, 34, 0),
@@ -839,15 +915,17 @@ class _BookDetailsState extends State<BookDetails> {
                           ),
                           child: Center(
                             child: Text(
-                              'Borrow this book',
+                              statusString == "Available" ? 'Borrow this book'
+                                  : 'Available at: ${book.fields.returnDate != null ? DateFormat('dd-MM-yyyy').format(book.fields.returnDate!) : 'Unavailable'}',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
-                                fontSize: 17,
+                                fontSize: statusString == "Available" ? 17 : 17,
                                 fontWeight: FontWeight.w700,
                                 height: 2.3529411765,
                                 color: const Color(0xff000000),
                               ),
                             ),
+
                           ),
                         )),
                     Container(
