@@ -15,7 +15,7 @@ class AddReview extends StatefulWidget {
 
 class _AddReviewState extends State<AddReview> {
   final _formKey = GlobalKey<FormState>();
-  double _rating = 1.0;
+  double _rating = 0.0;
   String _comment = "";
 
   @override
@@ -71,20 +71,34 @@ class _AddReviewState extends State<AddReview> {
               Center( // Center the button
                 child: ElevatedButton(
                   onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate()) {
+                      if (_rating == 0.0) {
+                        // Show a SnackBar if the rating is 0.0
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Input your rating!"),
+                          backgroundColor: Colors.red, // Optional: add color to your SnackBar
+                        ));
+                      } else {
+                        // Proceed with submitting the form
                         final response = await request.postJson(
                           "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
-                          jsonEncode(<String, String>{
+                          jsonEncode(<String, dynamic>{
                             "book": widget.bookId.toString(),
                             "comment": _comment,
                             "rating": _rating.toString(),
-                            "created_at": DateTime.now().toString()
+                            "created_at": DateTime.now().toIso8601String() // Use ISO8601 format for date
                           }),
                         );
                         if (response['status'] == 'success') {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Your review has been added successfully!"),
-                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Your review has been added succesfully!",
+                                style: TextStyle(color: Colors.black), // Set your desired text color here
+                              ),
+                              backgroundColor: Color(0xFF8BD0FC), // Set your desired background color here
+                            ),
+                          );
                           Navigator.pop(context, true);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -92,7 +106,8 @@ class _AddReviewState extends State<AddReview> {
                           ));
                         }
                       }
-                    },
+                    }
+                  },
                   child: Text('Submit Review', style: TextStyle(fontSize: 16)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF8BD0FC), // Button color
