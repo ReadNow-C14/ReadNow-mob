@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
+import 'package:readnow_mobile/main/login.dart';
 import 'package:readnow_mobile/styles/colors.dart';
 import 'package:readnow_mobile/models/book.dart';
 
@@ -35,6 +38,31 @@ class _SearchPageState extends State<SearchPage> {
     return listBooks;
   }
 
+  Future<void> _handleLogout() async {
+    final request = context.read<CookieRequest>();
+    final response = await request
+        .logout("https://readnow-c14-tk.pbp.cs.ui.ac.id/auth/logout/");
+    String message = response["message"];
+    if (response['status']) {
+      String uname = response["username"];
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("$message see you again, $uname!"),
+        ),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Logout failed: $message"),
+        ),
+      );
+    }
+  }
+
   List<Book> filterBooks(String query) {
     List<Book> filteredList = [];
     for (var book in listBooks) {
@@ -54,6 +82,14 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_outlined),
+            onPressed: () async {
+              await _handleLogout();
+            },
+          ),
+        ],
         toolbarHeight: height * 0.1 <= 150 ? height * 0.1 : 150,
         scrolledUnderElevation: 5,
         surfaceTintColor: Colors.transparent,
