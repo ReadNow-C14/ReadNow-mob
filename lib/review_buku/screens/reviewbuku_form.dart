@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 
 class AddReview extends StatefulWidget {
   final int bookId;
@@ -16,7 +15,7 @@ class AddReview extends StatefulWidget {
 
 class _AddReviewState extends State<AddReview> {
   final _formKey = GlobalKey<FormState>();
-  double _rating = 1.0; // Rating as a double
+  double _rating = 0.0;
   String _comment = "";
 
   @override
@@ -25,7 +24,13 @@ class _AddReviewState extends State<AddReview> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add your Review'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black87), // Modern icon color
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text('Add your Review', style: TextStyle(color: Colors.black87)), // Modern text style
+        backgroundColor: Colors.white, // Modern app bar color
+        elevation: 1, // Subtle shadow for app bar
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -34,77 +39,84 @@ class _AddReviewState extends State<AddReview> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              Center( // Center align the rating bar
                 child: RatingBar.builder(
                   initialRating: _rating,
                   minRating: 1,
                   direction: Axis.horizontal,
-                  allowHalfRating: false, // Set to false to only allow whole numbers
+                  allowHalfRating: false,
                   itemCount: 5,
+                  itemSize: 30.0, // Slightly larger stars
                   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      _rating = rating;
-                    });
-                  },
+                  itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+                  onRatingUpdate: (rating) => setState(() => _rating = rating),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "Comment",
-                    labelText: "Comment",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
+              SizedBox(height: 16.0), // Spacing between elements
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Write your comment here",
+                  labelText: "Comment",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+                  focusedBorder: OutlineInputBorder( // Highlight color when focused
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
-                  onChanged: (String? value) {
-                    setState(() {
-                      _comment = value!;
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return "Comment cannot be empty!";
-                    }
-                    return null;
-                  },
                 ),
+                onChanged: (value) => setState(() => _comment = value),
+                validator: (value) => value == null || value.isEmpty ? "Comment cannot be empty!" : null,
+                maxLines: 3, // Allow for multi-line input
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    // Send to Django and wait for response
-                    final response = await request.postJson(
-                      "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
-                      jsonEncode(<String, String>{
-                        "book": widget.bookId.toString(),
-                        "comment": _comment,
-                        "rating": _rating.toString(),
-                        "created_at": DateTime.now().toString()
-                      }),
-                    );
-                    if (response['status'] == 'success') {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Your review has been added successfully!"),
-                      ));
-                      
-                      // Ini adalah penambahan. Navigator.pop dengan nilai 'true'
-                      Navigator.pop(context, true);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("There was an error, please try again."),
-                      ));
+              SizedBox(height: 20.0), // Spacing before the button
+              Center( // Center the button
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      if (_rating == 0.0) {
+                        // Show a SnackBar if the rating is 0.0
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("Input your rating!"),
+                          backgroundColor: Colors.red, // Optional: add color to your SnackBar
+                        ));
+                      } else {
+                        // Proceed with submitting the form
+                        final response = await request.postJson(
+                          "https://readnow-c14-tk.pbp.cs.ui.ac.id/review/submit-review-flutter/${widget.bookId}",
+                          jsonEncode(<String, dynamic>{
+                            "book": widget.bookId.toString(),
+                            "comment": _comment,
+                            "rating": _rating.toString(),
+                            "created_at": DateTime.now().toIso8601String() // Use ISO8601 format for date
+                          }),
+                        );
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Your review has been added succesfully!",
+                                style: TextStyle(color: Colors.black), // Set your desired text color here
+                              ),
+                              backgroundColor: Color(0xFF8BD0FC), // Set your desired background color here
+                            ),
+                          );
+                          Navigator.pop(context, true);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text("There was an error, please try again."),
+                          ));
+                        }
+                      }
                     }
-                  }
-                },
-                child: Text('Submit Review'),
+                  },
+                  child: Text('Submit Review', style: TextStyle(fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF8BD0FC), // Button color
+                    foregroundColor: Colors.black, // Text color
+                    shape: StadiumBorder(),
+                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                    elevation: 0, // No shadow
+                  ),
+                ),
               ),
             ],
           ),
