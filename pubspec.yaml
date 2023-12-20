@@ -40,6 +40,8 @@ dependencies:
   http: ^1.1.2
   google_fonts: ^6.1.0
   flutter_rating_bar: ^4.0.1
+  carousel_slider: ^4.0.0
+  
 
 dev_dependencies:
   flutter_test:
