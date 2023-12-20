@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:readnow_mobile/main/book_details.dart';
-// import 'package:pbp_django_auth/pbp_django_auth.dart';
-// import 'package:provider/provider.dart';
-import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
+import 'package:readnow_mobile/main/book_details.dart';
+import 'package:readnow_mobile/styles/colors.dart';
+import 'package:readnow_mobile/models/book.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,64 +13,185 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  List<Book> listBooks = [];
+  List<Book> filteredList = [];
+  bool isSearching = false;
+
   Future<List<Book>> fetchItem() async {
-    // final request = context.watch<CookieRequest>();
     var url = Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/json/');
-    // melakukan decode response menjadi bentuk json
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
 
-    // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    // melakukan konversi data json menjadi object Product
-    List<Book> list_product = [];
+    listBooks = [];
     for (var d in data) {
       if (d != null) {
-        list_product.add(Book.fromJson(d));
+        listBooks.add(Book.fromJson(d));
       }
     }
-    return list_product;
+    return listBooks;
+  }
+
+  List<Book> filterBooks(String query) {
+    List<Book> filteredList = [];
+    for (var book in listBooks) {
+      if (book.fields.title.toLowerCase().contains(query.toLowerCase()) ||
+          book.fields.authors.toLowerCase().contains(query.toLowerCase()) ||
+          book.fields.isbn.toLowerCase().contains(query.toLowerCase())) {
+        filteredList.add(book);
+      }
+    }
+    return filteredList;
   }
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Item'),
-          backgroundColor: Colors.indigo,
-          foregroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        toolbarHeight: height * 0.1 <= 150 ? height * 0.1 : 150,
+        scrolledUnderElevation: 5,
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.white,
+        elevation: 5,
+        title: Stack(
+          children: [
+            SizedBox(
+              width: width,
+              child: Text(
+                'SEARCH',
+                style: TextStyle(
+                  fontSize: width * 0.15 <= 40 ? width * 0.15 : 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black.withOpacity(0.2),
+                  letterSpacing: width * 0.1 <= 2 ? 1 : 2,
+                ),
+              ),
+            ),
+            Positioned(
+              top: (height * 0.02),
+              left: width * 0.1,
+              child: Text(
+                'Books',
+                style: TextStyle(
+                  fontSize: width * 0.1 <= 15 ? width * 0.1 : 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colorz.black,
+                ),
+              ),
+            ),
+          ],
         ),
-        // drawer: const LeftDrawer(),
-        body: FutureBuilder(
-            future: fetchItem(),
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (!snapshot.hasData) {
-                  return const Column(
-                    children: [
-                      Text(
-                        "No book found.",
-                        style:
-                            TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  );
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              width * 0.05,
+              height * 0.02,
+              width * 0.05,
+              height * 0.02,
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search by Title, Author, or ISBN',
+                hintStyle: TextStyle(
+                  fontSize: width * 0.1 <= 15 ? width * 0.1 : 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[500],
+                ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey[500],
+                ),
+                filled: true,
+                fillColor: Colors.grey[200],
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  setState(() {
+                    isSearching = true;
+                    filteredList = filterBooks(value);
+                  });
                 } else {
-                  return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (_, index) => InkWell(
+                  setState(() {
+                    isSearching = false;
+                  });
+                }
+              },
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: fetchItem(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text("No book found."),
+                    );
+                  } else {
+                    if (isSearching) {
+                      if (filteredList.isEmpty) {
+                        return const Center(
+                          child: Text("Book is Not Found"),
+                        );
+                      }
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: filteredList.length,
+                        itemBuilder: (_, index) => InkWell(
                           onTap: () {
-                            // Navigasi ke halaman ItemInformations dengan membawa data item
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookDetails(
+                                  book: filteredList[index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: GridTile(
+                            child: Column(
+                              children: [
+                                Image.network(
+                                  filteredList[index].fields.imageUrl,
+                                ),
+                                Text(
+                                  filteredList[index].fields.title,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(filteredList[index].fields.authors),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) => InkWell(
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -83,19 +202,29 @@ class _SearchPageState extends State<SearchPage> {
                             );
                           },
                           child: GridTile(
-                              child: Column(
-                            children: [
-                              Image.network(
-                                  "${snapshot.data![index].fields.imageUrl}"),
-                              Text(
-                                "${snapshot.data![index].fields.title}",
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text("${snapshot.data![index].fields.authors}"),
-                            ],
-                          ))));
+                            child: Column(
+                              children: [
+                                Image.network(
+                                  "${snapshot.data![index].fields.imageUrl}",
+                                ),
+                                Text(
+                                  "${snapshot.data![index].fields.title}",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text("${snapshot.data![index].fields.authors}"),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }
                 }
-              }
-            }));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
