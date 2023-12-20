@@ -31,7 +31,14 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
           icon: Icon(Icons.arrow_back_ios, color: Colors.black87), // Modern icon color
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Select Return Date', style: TextStyle(color: Colors.black87)), // Modern text style
+        title: Text(
+          'Select Return Date',
+          style: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            height: 2, color: Colors.black87
+          ),
+        ),// Modern text style
         backgroundColor: Colors.white, // Modern app bar color
         elevation: 1, // Subtle shadow for app bar
       ),
@@ -45,7 +52,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
               TextFormField(
                 controller: _dateController,
                 decoration: InputDecoration(
-                  labelText: '${widget.book.pk} pages',
+                  labelText: 'Return date',
                   filled: true,
                   prefixIcon: Icon(Icons.calendar_today),
                   enabledBorder: OutlineInputBorder(
@@ -87,9 +94,9 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                       // Perform the submission logic
                       print("tes");
                       final response = await request.postJson(
-                          'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/borrow-book-flutteeer/${widget.book.pk}/',
+                          'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/borrow-flutter/${widget.book.pk}/',
                           jsonEncode(<String, dynamic>{
-                            'return_date' : DateTime.now().add(Duration(days: 3)).toString(),
+                            'return_date' : _dateController.text.toString(),
                           }));
 
                       if (response['status'] == 'success') {
@@ -100,6 +107,9 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                             context,
                             MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2))
                         );
+                      } else if (response['status'] == 'error' && response['message'] != null) {
+                        print("gagal123");
+                        print(response['message']);
                       } else {
                         print("gagal");
                       }
@@ -145,157 +155,5 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
       });
     }
   }
-
-  Future<void> _submitForm() async {
-    // Trigger form validation
-    if (_formKey.currentState!.validate()) {
-      final request = Provider.of<CookieRequest>(context, listen: false);
-      // Perform the submission logic
-      print("tes");
-      final response = await request.postJson(
-          'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/borrow-book-flutter/${widget.book.pk}/',
-          jsonEncode(<String, dynamic>{
-            'return_date' : DateTime.now().add(Duration(days: 3)).toString(),
-          }));
-
-      if (response['status'] == 'success') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Berhasil meminjam buku ${widget.book.fields.title}!")),
-        );
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2))
-        );
-      } else {
-        print("gagal");
-      }
-    } else {
-      print("tidak valid");
-      // This else block will run if the form is not valid.
-      // You can add additional logic here if needed.
-    }
-  }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:pbp_django_auth/pbp_django_auth.dart';
-// import 'package:readnow_mobile/models/book.dart';
-// import 'package:readnow_mobile/pinjam_buku/screens/list_borrowed_book.dart';
-// import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
-// import 'package:intl/intl.dart';
-// import 'dart:convert';
-//
-// class BorrowFormPage extends StatefulWidget {
-//   final Book book;
-//   const BorrowFormPage({super.key, required this.book});
-//
-//   @override
-//   State<BorrowFormPage> createState() => _BorrowFormPageState();
-// }
-//
-// class _BorrowFormPageState extends State<BorrowFormPage> {
-//   final _formKey = GlobalKey<FormState>(); // Global key for the form
-//   DateTime _returnDate = DateTime.now();
-//   TextEditingController _dateController = TextEditingController();
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final request = context.watch<CookieRequest>();
-//     Book book = widget.book;
-//
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Borrow Form'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(30),
-//         child: Form( // Wrap with Form widget
-//           key: _formKey, // Assign the global key to the form
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.stretch,
-//             children: <Widget>[
-//               TextFormField(
-//                 controller: _dateController,
-//                 decoration: InputDecoration(
-//                   labelText: '${widget.book.pk} pages',
-//                   filled: true,
-//                   prefixIcon: Icon(Icons.calendar_today),
-//                   enabledBorder: OutlineInputBorder(
-//                       borderSide: BorderSide.none
-//                   ),
-//                   focusedBorder: OutlineInputBorder(
-//                       borderSide: BorderSide(color: Colors.blue)
-//                   ),
-//                 ),
-//                 readOnly: true,
-//                 onTap: _selectDate,
-//                 validator: (value) {
-//                   if (value == null || value.isEmpty) {
-//                     return 'Please pick a date';
-//                   }
-//                   return null;
-//                 },
-//               ),
-//               SizedBox(height: 20),
-//               ElevatedButton(
-//                 onPressed: _submitForm,
-//                 child: Text('Submit'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Future<void> _selectDate() async {
-//     DateTime? _picked = await showDatePicker(
-//         context: context,
-//         initialDate: DateTime.now(),
-//         firstDate: DateTime(2000),
-//         lastDate: DateTime(2100)
-//     );
-//
-//     if (_picked != null) {
-//       setState(() {
-//         // Format the date as DD/MM/YYYY
-//         _dateController.text = DateFormat('dd/MM/yyyy').format(_picked);
-//         _formKey.currentState?.validate();
-//       });
-//     }
-//   }
-//
-//   void _submitForm() async {
-//     // Trigger form validation
-//     if (_formKey.currentState!.validate()) {
-//       final request = Provider.of<CookieRequest>(context, listen: false);
-//       // Perform the submission logic
-//       print("tes");
-//       print(widget.book.pk);
-//       final response = await request.post(
-//           'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/borrow-book-flutter/',
-//           jsonEncode(<String, dynamic>{
-//             'book_id' : widget.book.pk,
-//             'return_date': _dateController.text,
-//           }));
-//
-//       if (response['status'] == 'success') {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text("Berhasil meminjam buku ${widget.book.fields.title}!")),
-//         );
-//         Navigator.pushReplacement(
-//             context,
-//             MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2))
-//         );
-//       } else {
-//         print("gagal");
-//       }
-//     } else {
-//       print("tidak valid");
-//       // This else block will run if the form is not valid.
-//       // You can add additional logic here if needed.
-//     }
-//   }
-// }
 
