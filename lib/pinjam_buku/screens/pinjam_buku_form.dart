@@ -11,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 class BorrowFormPage extends StatefulWidget {
   final Book book;
 
-  BorrowFormPage({Key? key, required this.book}) : super(key: key);
+  const BorrowFormPage({Key? key, required this.book}) : super(key: key);
 
   @override
   _BorrowFormPageState createState() => _BorrowFormPageState();
@@ -19,7 +19,7 @@ class BorrowFormPage extends StatefulWidget {
 
 class _BorrowFormPageState extends State<BorrowFormPage> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black87), // Modern icon color
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black87), // Modern icon color
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -51,7 +51,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
             children: <Widget>[
               TextFormField(
                 controller: _dateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Return date',
                   filled: true,
                   prefixIcon: Icon(Icons.calendar_today),
@@ -79,8 +79,8 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                 decoration: BoxDecoration(
                   color: Color(0xfffce76c),
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
+                  boxShadow: const [
+                    BoxShadow (
                       color: Color(0x3f000000),
                       offset: Offset(0, 4),
                       blurRadius: 2,
@@ -105,7 +105,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                         );
                         Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 2))
+                            MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 1))
                         );
                       } else if (response['status'] == 'error' && response['message'] != null) {
                         print("gagal123");
