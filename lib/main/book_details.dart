@@ -82,6 +82,7 @@ class _BookDetailsState extends State<BookDetails> {
   Widget _buildReview(Review review) {
     String truncatedComment = review.comment;
     if (truncatedComment.length > 20) {
+      // ignore: prefer_interpolation_to_compose_strings
       truncatedComment = truncatedComment.substring(0, 20) + '...';
     }
     
@@ -115,7 +116,7 @@ class _BookDetailsState extends State<BookDetails> {
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           return Expanded( // This will take all available space for the ListView
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(), // To prevent scrolling within the ListView
+              physics: const NeverScrollableScrollPhysics(), // To prevent scrolling within the ListView
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return _buildReview(snapshot.data![index]);
@@ -138,7 +139,7 @@ class _BookDetailsState extends State<BookDetails> {
   Widget _buildStars(int count) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(count, (index) => Icon(Icons.star, color: Colors.amber, size: 16)),
+      children: List.generate(count, (index) => const Icon(Icons.star, color: Colors.amber, size: 16)),
     );
   }
 
@@ -886,7 +887,7 @@ class _BookDetailsState extends State<BookDetails> {
                                 maxChildSize: 0.35,
                                 builder: (_, scrollController) {
                                   return Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(16),
