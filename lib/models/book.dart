@@ -145,16 +145,19 @@ class Fields {
       };
 }
 
+// ignore: constant_identifier_names
 enum Language { ENG, EN_US }
 
 final languageValues =
     EnumValues({"eng": Language.ENG, "en-US": Language.EN_US});
 
+// ignore: constant_identifier_names
 enum Status { AVAILABLE, BORROWED }
 
 final statusValues =
     EnumValues({"Available": Status.AVAILABLE, "Borrowed": Status.BORROWED});
 
+// ignore: constant_identifier_names
 enum Model { BOOK_BOOK }
 
 final modelValues = EnumValues({"book.book": Model.BOOK_BOOK});
