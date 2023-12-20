@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -42,7 +44,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
         elevation: 1, // Subtle shadow for app bar
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -70,13 +72,13 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Container(
-                margin: EdgeInsets.fromLTRB(86, 0, 87, 0),
+                margin: const EdgeInsets.fromLTRB(86, 0, 87, 0),
                 width: double.infinity,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Color(0xfffce76c),
+                  color: const Color(0xfffce76c),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: const [
                     BoxShadow (
@@ -104,13 +106,9 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                                 builder: (context) => const BottomNav(initialIndex: 1,)),
                                 (route) => false);
                       } else if (response['status'] == 'error' && response['message'] != null) {
-                        print("gagal123");
-                        print(response['message']);
                       } else {
-                        print("gagal");
                       }
                     } else {
-                      print("tidak valid");
                     }
                   },
                   child: Center(
@@ -121,7 +119,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         height: 2,
-                        color: Color(0xff000000),
+                        color: const Color(0xff000000),
                       ),
                     ),
                   ),

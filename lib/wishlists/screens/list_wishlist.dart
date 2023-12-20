@@ -13,6 +13,7 @@ class MyWishlistPage extends StatefulWidget {
   const MyWishlistPage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _MyWishlistPageState createState() => _MyWishlistPageState();
 }
 

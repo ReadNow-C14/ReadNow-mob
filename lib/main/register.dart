@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -96,8 +98,6 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       } else {
         // The response is not JSON. Likely an HTML error page.
-        print(response.body);
-        print(response.statusCode);
         throw Exception('Received invalid response format from the server');
       }
     } catch (e) {
@@ -245,7 +245,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   right: 0,
                   child: Center(
                     child: ElevatedButton(
-                      child: Text('Sign up'),
                       onPressed: () {
                         registerUser();
                       },
@@ -260,6 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             EdgeInsets.symmetric(horizontal: 130, vertical: 10),
                         elevation: 5,
                       ),
+                      child: Text('Sign up'),
                     ),
                   ),
                 ),
