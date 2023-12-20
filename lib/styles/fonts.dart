@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
 
 class Fontz {
+  // ignore: non_constant_identifier_names
   static final TextStyle B70 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -11,6 +12,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle B36 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -19,6 +21,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle B18 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -27,6 +30,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle B17 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -35,6 +39,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle M17 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -43,6 +48,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle B15 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,
@@ -51,6 +57,7 @@ class Fontz {
     ),
   );
 
+  // ignore: non_constant_identifier_names
   static final TextStyle B13 = GoogleFonts.poppins(
     textStyle: const TextStyle(
       color: Colorz.black,

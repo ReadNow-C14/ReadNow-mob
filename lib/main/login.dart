@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextFormField(
                         controller: _usernameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Username',
                           hintText: 'Enter username',
                         ),
@@ -155,11 +155,10 @@ class _LoginPageState extends State<LoginPage> {
                         if (request.loggedIn) {
                           String message = response['message'];
                           String uname = response['username'];
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BottomNav()),
-                          );
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => BottomNav()),
+                              (route) => false);
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(SnackBar(
