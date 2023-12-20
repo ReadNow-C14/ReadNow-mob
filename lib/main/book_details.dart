@@ -561,7 +561,7 @@ class _BookDetailsState extends State<BookDetails> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ReviewPage(bookid: widget.book.pk),
+                                    builder: (context) => ReviewPage(bookid: widget.book.pk, bookTitle: book.fields.title),
                                   ),
                                 );
                               },
