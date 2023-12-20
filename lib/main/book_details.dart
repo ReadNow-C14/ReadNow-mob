@@ -827,8 +827,8 @@ class _BookDetailsState extends State<BookDetails> {
                             isScrollControlled: true,
                             builder: (BuildContext context) {
                               return DraggableScrollableSheet(
-                                initialChildSize: 0.3,
-                                maxChildSize: 0.3,
+                                initialChildSize: 0.35,
+                                maxChildSize: 0.35,
                                 builder: (_, scrollController) {
                                   return Container(
                                     decoration: BoxDecoration(
