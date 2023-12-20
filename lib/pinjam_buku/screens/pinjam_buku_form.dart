@@ -97,7 +97,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
 
                       if (response['status'] == 'success') {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Berhasil meminjam buku ${widget.book.fields.title}!")),
+                          SnackBar(content: Text("Successfully borrowed ${widget.book.fields.title}!")),
                         );
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
