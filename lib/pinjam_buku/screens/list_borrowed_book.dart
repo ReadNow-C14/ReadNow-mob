@@ -4,10 +4,8 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
-import 'package:readnow_mobile/wishlists/utilities/cards.dart';
 import 'package:readnow_mobile/pinjam_buku/widgets/borrowed_book_card.dart';
 
-// menyimpan id buku yang ada di wishlist
 final List<int> borrowedBookId = <int>[];
 
 class BorrowedBookPage extends StatefulWidget {
@@ -18,16 +16,13 @@ class BorrowedBookPage extends StatefulWidget {
 }
 
 class _BorrowedBookPageState extends State<BorrowedBookPage> {
-  // Variable
   List<Book> listBorrowedBook = [];
-  // Fetching data
   Future<List<Book>> fetchWishlist(CookieRequest cookieRequest) async {
     var response = await cookieRequest
         .get("https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/get-borrowed-book/");
 
     listBorrowedBook = [];
 
-    // konversi json menjadi object Product
     for (var d in response) {
       if (d != null) {
         listBorrowedBook.add(Book.fromJson(d));
@@ -40,7 +35,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
     return listBorrowedBook;
   }
 
-  // Menampilkan data
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -57,7 +51,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
         elevation: 5,
         title: Stack(
           children: [
-            // Wishlist
             SizedBox(
               width: width,
               child: Text(
@@ -88,7 +81,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      // ================== Menampilkan seluruh Wishlist yang ada ==================
       body: FutureBuilder(
           future: fetchWishlist(request),
           builder: (context, AsyncSnapshot snapshot) {
@@ -139,7 +131,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (_, index) => InkWell(
                         onTap: () {
-                          // Navigasi ke halaman ItemInformations dengan membawa data item
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -160,12 +151,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
   }
 
   removeItem(int id, CookieRequest request) async {
-    // final response = request.postJson(
-    //   jsonEncode(<String, String>{
-    //     // 'book_id': list_wishlist[index].pk.toString(),
-    //     'book_id': "-1",
-    //   })
-    // );
     final response = await request.post(
         'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/return-book-flutter/$id/',
         {});
