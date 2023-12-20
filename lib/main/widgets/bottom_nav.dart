@@ -4,12 +4,6 @@ import 'package:readnow_mobile/pinjam_buku/screens/list_borrowed_book.dart';
 import 'package:readnow_mobile/wishlists/screens/list_wishlist.dart';
 
 final widgets = [
-  const Center(
-    child: Text(
-      'Harusnya Home',
-      style: TextStyle(fontSize: 40),
-    ),
-  ),
   const SearchPage(),
   const BorrowedBookPage(),
   const MyWishlistPage(),
@@ -38,6 +32,7 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       body: widgets[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xff8bd0fc),
         currentIndex: _currentIndex,
         selectedItemColor: Colors.black,
         unselectedItemColor: Colors.black,
@@ -47,11 +42,6 @@ class _BottomNavState extends State<BottomNav> {
             label: 'Home',
             backgroundColor: Color(0xff8bd0fc),
             activeIcon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-            backgroundColor: Color(0xff8bd0fc),
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.book_outlined),
