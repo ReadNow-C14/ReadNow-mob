@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:readnow_mobile/main/widgets/bottom_nav.dart';
 import 'package:readnow_mobile/models/book.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BorrowFormPage extends StatefulWidget {
@@ -89,10 +88,7 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                 ),
                 child: TextButton(
                   onPressed: () async {
-                    // Trigger form validation
                     if (_formKey.currentState!.validate()) {
-                      // Perform the submission logic
-                      print("tes");
                       final response = await request.postJson(
                           'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/borrow-flutter/${widget.book.pk}/',
                           jsonEncode(<String, dynamic>{
@@ -103,10 +99,10 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Berhasil meminjam buku ${widget.book.fields.title}!")),
                         );
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => BottomNav(initialIndex: 1))
-                        );
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const BottomNav(initialIndex: 1,)),
+                                (route) => false);
                       } else if (response['status'] == 'error' && response['message'] != null) {
                         print("gagal123");
                         print(response['message']);
@@ -115,8 +111,6 @@ class _BorrowFormPageState extends State<BorrowFormPage> {
                       }
                     } else {
                       print("tidak valid");
-                      // This else block will run if the form is not valid.
-                      // You can add additional logic here if needed.
                     }
                   },
                   child: Center(
