@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => RegisterPage()),
               );

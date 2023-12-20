@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop(); // Dismiss dialog
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },

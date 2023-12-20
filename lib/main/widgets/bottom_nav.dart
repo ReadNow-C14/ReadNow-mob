@@ -12,7 +12,8 @@ final widgets = [
 class BottomNav extends StatefulWidget {
   final int initialIndex; // Add this line
 
-  const BottomNav({Key? key, this.initialIndex = 0}) : super(key: key); // Modify this line
+  const BottomNav({Key? key, this.initialIndex = 0})
+      : super(key: key); // Modify this line
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -24,7 +25,8 @@ class _BottomNavState extends State<BottomNav> {
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.initialIndex; // Set initial index based on the parameter
+    _currentIndex =
+        widget.initialIndex; // Set initial index based on the parameter
   }
 
   @override
@@ -47,8 +49,7 @@ class _BottomNavState extends State<BottomNav> {
               icon: Icon(Icons.book_outlined),
               label: 'Borrow',
               backgroundColor: Color(0xff8bd0fc),
-              activeIcon: Icon(Icons.book_rounded)
-          ),
+              activeIcon: Icon(Icons.book_rounded)),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite_outline_rounded),
             label: 'Wishlist',

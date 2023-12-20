@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:readnow_mobile/main/screens/login.dart';
-import 'package:readnow_mobile/main/screens/register.dart';
+import 'package:readnow_mobile/main/login.dart';
+import 'package:readnow_mobile/main/register.dart';
 import 'package:readnow_mobile/styles/colors.dart';
 
-void main() {
-  runApp(LandingPage());
+class LandingApp extends StatelessWidget {
+  const LandingApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sign in',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: LandingPage(),
+    );
+  }
 }
 
 class LandingPage extends StatelessWidget {
