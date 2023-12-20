@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readnow_mobile/pinjam_buku/screens/list_borrowed_book.dart';
 import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/pinjam_buku_form.dart';
@@ -820,9 +821,29 @@ class _BookDetailsState extends State<BookDetails> {
                   children: [
                     InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BorrowFormPage(book: book)
-                          ));
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return DraggableScrollableSheet(
+                                initialChildSize: 0.3,
+                                maxChildSize: 0.3,
+                                builder: (_, scrollController) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        topRight: Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: BorrowFormPage(book: book),
+                                  );
+                                },
+                              );
+                            },
+                          );
                         },
                         child: Container(
                           // frame107NB (I78:939;74:806)
