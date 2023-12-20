@@ -260,7 +260,6 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
                   ),
                 );
               } else {
-                print("tes123");
                 return ListView.builder(
                     padding: const EdgeInsets.only(top: 0),
                     shrinkWrap: true, // Menambahkan ini
@@ -295,7 +294,7 @@ class _BorrowedBookPageState extends State<BorrowedBookPage> {
     //   })
     // );
     final response = await request.post(
-        'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/return-borrowed-book-flutter/$id/',
+        'https://readnow-c14-tk.pbp.cs.ui.ac.id/pinjam/return-book-flutter/$id/',
         {});
     if (response["status"] == "success") {
       if (mounted) {
