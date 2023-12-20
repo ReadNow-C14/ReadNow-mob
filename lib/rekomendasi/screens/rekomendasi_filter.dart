@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
+import 'package:readnow_mobile/rekomendasi/screens/rekomendasi_isbn.dart';
 
 class RekomendasiFilter extends StatefulWidget {
   final int publishedYear;

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_page.dart';
+import 'package:readnow_mobile/rekomendasi/screens/rekomendasi_page.dart';
 import 'package:readnow_mobile/review_buku/screens/review_buku.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/pinjam_buku_form.dart';
 import 'package:readnow_mobile/wishlists/screens/list_wishlist.dart';
