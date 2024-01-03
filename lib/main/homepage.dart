@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -14,10 +17,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hello, User'),
+        title: const Text('Hello, User'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout_outlined),
+            icon: const Icon(Icons.logout_outlined),
             onPressed: () {
               // Implement your edit action here
             },
@@ -33,12 +36,12 @@ class _HomePageState extends State<HomePage> {
                     builder: (BuildContext context) {
                       return Container(
                         width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(
                           color: Colors.amber,
                         ),
                         child:
-                            Text('text $i', style: TextStyle(fontSize: 16.0)),
+                            Text('text $i', style: const TextStyle(fontSize: 16.0)),
                       );
                     },
                   );
@@ -65,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 child: Container(
                   width: 12.0,
                   height: 12.0,
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: (Theme.of(context).brightness == Brightness.dark
