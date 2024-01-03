@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:readnow_mobile/main/searchpage.dart';
 import 'package:readnow_mobile/pinjam_buku/screens/list_borrowed_book.dart';

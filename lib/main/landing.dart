@@ -3,19 +3,8 @@ import 'package:readnow_mobile/main/login.dart';
 import 'package:readnow_mobile/main/register.dart';
 import 'package:readnow_mobile/styles/colors.dart';
 
-class LandingApp extends StatelessWidget {
-  const LandingApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sign in',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LandingPage(),
-    );
-  }
+void main() {
+  runApp(LandingPage());
 }
 
 class LandingPage extends StatelessWidget {

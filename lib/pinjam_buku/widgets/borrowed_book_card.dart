@@ -1,8 +1,9 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readnow_mobile/models/book.dart';
 
-// ignore: must_be_immutable
 class BorrowedCard extends StatelessWidget {
   Book book;
   final VoidCallback onTap;
@@ -15,16 +16,13 @@ class BorrowedCard extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var containerHeight = height * 0.16;
     return Container(
-      // 7WT (1:2768)
       margin: EdgeInsets.fromLTRB(
           width * 0.01, height * 0.03, width * 0.01, height * 0.005),
       width: double.infinity,
       height: height * 0.18,
       child: Stack(
         children: [
-          // Box Row Beres
           Positioned(
-            // rectangle39D (1:2769)
             left: width * 0.05,
             top: containerHeight * 0.05,
             child: Align(
@@ -47,9 +45,7 @@ class BorrowedCard extends StatelessWidget {
               ),
             ),
           ),
-          // Title Beres
           Positioned(
-            // graphicdesignadvanvMR (1:2772)
             left: width * 0.05 + containerHeight * 0.9,
             top: containerHeight * 0.17,
             child: Align(
@@ -69,9 +65,7 @@ class BorrowedCard extends StatelessWidget {
               ),
             ),
           ),
-          // Author Beres
           Positioned(
-            // graphicdesignRfZ (1:2771)
             left: width * 0.05 + containerHeight * 0.9,
             top: containerHeight * 0.4,
             child: Align(
@@ -86,14 +80,11 @@ class BorrowedCard extends StatelessWidget {
                     height: 1.255,
                     color: const Color(0xffff6b00),
                   ),
-                  // overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ),
-          // Rating & Pages Beres
           Positioned(
-            // starDbR (1:2773)
             left: width * 0.05 + containerHeight * 0.9,
             top: containerHeight * 0.58,
             child: Align(
@@ -112,7 +103,6 @@ class BorrowedCard extends StatelessWidget {
               ),
             ),
           ),
-          // ISBN Beres
           Positioned(
             left: width * 0.68,
             top: containerHeight * 0.7,
@@ -147,23 +137,7 @@ class BorrowedCard extends StatelessWidget {
               ),
             ),
           ),
-          // Positioned(
-          //   left: width * 0.75,
-          //   top: containerHeight * 0.7,
-          //   child: InkWell(
-          //     onTap: onTap,
-          //     child: Center(
-          //       child: CircleAvatar(
-          //         backgroundColor: Colors.yellow,
-          //         radius: containerHeight * 0.15,
-          //         child: const Icon(Icons.delete_outline),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // Shading Beres
           Positioned(
-            // rectangle280dCo (68:657)
             left: width * 0.05 + containerHeight * 0.1,
             top: containerHeight * 0.05,
             child: SizedBox(
@@ -177,13 +151,10 @@ class BorrowedCard extends StatelessWidget {
               ),
             ),
           ),
-          // Gambar Beres
           Positioned(
-            // imageKcX (1:2770)
             left: width * 0.05,
             top: 0,
             child: Container(
-              // rectangle278Eif (68:628)
               margin: const EdgeInsets.fromLTRB(0, 0, 20, 4),
               width: containerHeight * 0.95 * 0.69,
               height: containerHeight * 0.95,

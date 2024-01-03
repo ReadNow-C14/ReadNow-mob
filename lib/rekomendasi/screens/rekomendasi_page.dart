@@ -4,8 +4,8 @@ import 'package:readnow_mobile/main/book_details.dart';
 import 'package:readnow_mobile/models/book.dart';
 import 'package:http/http.dart' as http;
 import 'package:google_fonts/google_fonts.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_filter.dart';
-import 'package:readnow_mobile/rekomendasi/rekomendasi_isbn.dart';
+import 'package:readnow_mobile/rekomendasi/screens/rekomendasi_filter.dart';
+import 'package:readnow_mobile/rekomendasi/screens/rekomendasi_isbn.dart';
 
 class RecommendationPage extends StatefulWidget {
   final Book book;
