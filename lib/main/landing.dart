@@ -68,7 +68,7 @@ class LandingPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           // Login button
                           child: ElevatedButton(
                             onPressed: () {
@@ -98,7 +98,7 @@ class LandingPage extends StatelessWidget {
                         // Sign Up button
                         const SizedBox(height: 20),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
