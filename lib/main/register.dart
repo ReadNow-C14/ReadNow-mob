@@ -47,7 +47,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://readnow-c14-tk.pbp.cs.ui.ac.id/auth/register/'),
+        Uri.parse(
+            'https://readnow-c14-tk.pbp.cs.ui.ac.id/auth/register_flutter/'),
         body: {
           'username': username,
           'password': password,
@@ -70,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: const Text('OK'),
                   onPressed: () {
                     Navigator.of(context).pop(); // Dismiss dialog
-                    Navigator.of(context).pushReplacement(
+                    Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
@@ -183,6 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           labelText: 'Username',
                           hintText: 'Enter username',
