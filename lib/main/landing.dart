@@ -4,10 +4,12 @@ import 'package:readnow_mobile/main/register.dart';
 import 'package:readnow_mobile/styles/colors.dart';
 
 void main() {
-  runApp(LandingPage());
+  runApp(const LandingPage());
 }
 
 class LandingPage extends StatelessWidget {
+  const LandingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +18,7 @@ class LandingPage extends StatelessWidget {
           // Use Stack to overlay the darkening container
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/landing.jpg"),
                   fit: BoxFit.cover,
@@ -37,7 +39,7 @@ class LandingPage extends StatelessWidget {
                     child: Container(), // Empty container used for spacing
                   ),
                   // Positioned text at the top
-                  Expanded(
+                  const Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -79,7 +81,6 @@ class LandingPage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text('Login'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colorz.yellow, // Button color
                               foregroundColor: Colorz.black,
@@ -87,14 +88,15 @@ class LandingPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 130, vertical: 10),
                               elevation: 5,
                             ),
+                            child: const Text('Login'),
                           ),
                         ),
                         // Sign Up button
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 50),
                           child: ElevatedButton(
@@ -108,7 +110,6 @@ class LandingPage extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Text('Sign Up'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colorz.blue, // Button color
                               foregroundColor: Colorz.black,
@@ -116,10 +117,11 @@ class LandingPage extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 120, vertical: 10),
                               elevation: 5,
                             ),
+                            child: const Text('Sign Up'),
                           ),
                         ),
                         /*Padding(
@@ -130,7 +132,7 @@ class LandingPage extends StatelessWidget {
                                 style: TextStyle(color: Colorz.white)),
                           ),
                         ),*/
-                        SizedBox(height: 100),
+                        const SizedBox(height: 100),
                       ],
                     ),
                   ),
